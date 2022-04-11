@@ -3,6 +3,7 @@ using PaperlessClient.Mobile.NavigationHints;
 using PaperlessClient.Mobile.Services;
 using PaperlessClient.Mobile.Services.Abstraction;
 using PaperlessClient.Mobile.Views;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -18,7 +19,8 @@ namespace PaperlessClient.Mobile
             InitializeComponent();
             ServiceLocator.Setup();
             MessagingCenter.Subscribe<FileUploadRequest>(this, nameof(FileUploadRequest), UploadRequestReceived);
-            
+            MessagingCenter.Subscribe<LogoutRequest>(this, nameof(LogoutRequest), LogoutRequestReceived);
+
             navigationService = ServiceLocator.Resolve<INavigationService>();
             apiService = ServiceLocator.Resolve<IApiService>();
 
@@ -27,6 +29,12 @@ namespace PaperlessClient.Mobile
 #pragma warning disable CS4014
             InitializeAsync();
 #pragma warning restore CS4014
+        }
+
+        private async void LogoutRequestReceived(LogoutRequest obj)
+        {
+            await apiService.Logout();
+            await InitializeAsync();
         }
 
         private async void UploadRequestReceived(FileUploadRequest uploadRequest)
@@ -40,7 +48,6 @@ namespace PaperlessClient.Mobile
                     Title = uploadRequest.FileTitle,
                     DeleteFileAfterUpload = true
                 });
-            //await apiService.UploadInForeground(uploadRequest.FileUri);
         }
 
         private async Task InitializeAsync() {

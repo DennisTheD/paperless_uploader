@@ -100,6 +100,11 @@ namespace PaperlessClient.Mobile.Services
             return false;
         }
 
+        public async Task Logout() {
+            httpClient = new HttpClient();
+            await persistenceService.DeleteSecureAsync(API_CONFIG_KEY);
+        }
+
         public async Task UploadInForeground(
             Uri fileUri
             , string documentTitle = null) {

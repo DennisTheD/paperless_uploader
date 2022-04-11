@@ -11,7 +11,7 @@ using Xamarin.Forms.Xaml;
 namespace PaperlessClient.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LandingPage : ContentPage
+    public partial class LandingPage : TopLevelContentPage<LandingViewModel>
     {
         public LandingPage()
         {

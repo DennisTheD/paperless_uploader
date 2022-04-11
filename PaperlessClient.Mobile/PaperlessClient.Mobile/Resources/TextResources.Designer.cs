@@ -106,6 +106,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Logout ähnelt.
+        /// </summary>
+        public static string LogoutText {
+            get {
+                return ResourceManager.GetString("LogoutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Password ähnelt.
         /// </summary>
         public static string PasswordText {

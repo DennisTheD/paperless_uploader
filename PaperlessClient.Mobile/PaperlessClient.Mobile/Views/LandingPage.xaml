@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<views:TopLevelContentPage
+    x:TypeArguments="vms:LandingViewModel"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
-    xmlns:views="clr-namespace:PaperlessClient.Mobile.ViewModels"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
     x:Class="PaperlessClient.Mobile.Views.LandingPage"
     Title="Paperless">
+
+    <!--
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding LogoutCommand}"
+            Text="{ext:Translate LogoutText}" />
+    </ContentPage.ToolbarItems>
+    -->
 
     <ContentPage.Content>
         <Grid>
@@ -34,4 +43,4 @@
             </StackLayout>
         </Grid>
     </ContentPage.Content>
-</ContentPage>
+</views:TopLevelContentPage>

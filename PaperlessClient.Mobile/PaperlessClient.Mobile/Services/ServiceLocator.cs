@@ -28,6 +28,7 @@ namespace PaperlessClient.Mobile.Services
             //vms
             builder.RegisterType<SetupViewModel>().AsSelf();
             builder.RegisterType<UploadFileViewModel>().AsSelf();
+            builder.RegisterType<LandingViewModel>().AsSelf();
 
             _container = builder.Build();
             setupComplete = true;
