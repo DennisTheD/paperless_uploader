@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Foundation;
@@ -32,7 +33,22 @@ namespace PaperlessClient.Mobile.iOS
 
         public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
         {
-            var uploadRequest = new FileUploadRequest(url.ToString());
+            // create a copy of this file to avoid messing with ios security mechanisms
+            var tmpFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            var uri = new Uri(url.ToString());            
+
+            try
+            {
+                File.Copy(uri.LocalPath, tmpFile);
+                File.Delete(uri.LocalPath);
+            }
+            catch (Exception){
+                return false;
+            }
+
+            var uploadRequest = new FileUploadRequest(tmpFile) { 
+                FileTitle = Path.GetFileNameWithoutExtension(uri.LocalPath)
+            };
             MessagingCenter.Send(uploadRequest, nameof(FileUploadRequest));
             return true;
         }

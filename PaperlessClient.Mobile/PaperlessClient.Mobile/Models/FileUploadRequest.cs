@@ -8,7 +8,7 @@ namespace PaperlessClient.Mobile.Models
     {
         public Uri FileUri { get; set; }
         public string LocalPath => FileUri?.LocalPath;
-
+        public string FileTitle { get; set; }
 
         public FileUploadRequest(string fileUri)
         {

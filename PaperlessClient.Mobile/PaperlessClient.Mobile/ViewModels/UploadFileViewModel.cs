@@ -48,6 +48,7 @@ namespace PaperlessClient.Mobile.ViewModels
             if (parameter is UploadFileNavigationHint navigationHint) { 
                 fileUri = navigationHint.FileUri;
                 deleteFileAfterUpload = navigationHint.DeleteFileAfterUpload;
+                Name = navigationHint.Title;
             }
 
             if (fileUri == null
@@ -56,8 +57,6 @@ namespace PaperlessClient.Mobile.ViewModels
                 await navigationService.PopAsync();
                 return;
             }
-
-            Name = Path.GetFileNameWithoutExtension(fileUri.LocalPath);
         }
 
         public async Task Upload() {
@@ -67,7 +66,7 @@ namespace PaperlessClient.Mobile.ViewModels
             {
                 await apiService.UploadInForeground(fileUri, Name);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await notificationService.NotifyIfInForeground(this, "Fehler", "Beim Upload der Datei ist ein Fehler aufgetreten");
             }
@@ -83,6 +82,8 @@ namespace PaperlessClient.Mobile.ViewModels
                 }
                 catch (Exception){}
             }
+
+            await navigationService.PopAsync();
         }
     }
 }

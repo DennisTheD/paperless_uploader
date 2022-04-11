@@ -7,6 +7,7 @@ namespace PaperlessClient.Mobile.NavigationHints
     public class UploadFileNavigationHint
     {
         public Uri FileUri { get; set; }
+        public string Title { get; set; }
         public bool DeleteFileAfterUpload { get; set; }
     }
 }

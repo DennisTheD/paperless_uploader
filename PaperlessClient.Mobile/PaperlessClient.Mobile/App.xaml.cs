@@ -37,6 +37,7 @@ namespace PaperlessClient.Mobile
                 , new UploadFileNavigationHint()
                 {
                     FileUri = uploadRequest.FileUri,
+                    Title = uploadRequest.FileTitle,
                     DeleteFileAfterUpload = true
                 });
             //await apiService.UploadInForeground(uploadRequest.FileUri);
