@@ -5,24 +5,24 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     x:Class="PaperlessClient.Mobile.Views.UploadFilePage"
-    Title="Hochladen"
+    Title="{ext:Translate UploadText}"
     Padding="5,10,5,10">
 
     <ContentPage.Content>
         <StackLayout
             Padding="5,10,5,10"
             VerticalOptions="FillAndExpand">
-            <Label Text="Name" />
+            <Label Text="{ext:Translate TitleText}" />
             <Entry 
-                Text="{Binding Name}"
-                Placeholder="Dateiname" />
+                Text="{Binding Name}" />
 
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
             
             <Button 
                 Command="{Binding UploadCommand}"
-                Text="Hochladen" 
+                Text="{ext:Translate UploadText}" 
                 VerticalOptions="EndAndExpand" />
         </StackLayout>
     </ContentPage.Content>

@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.Services.Abstraction;
+﻿using PaperlessClient.Mobile.Resources;
+using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -43,7 +44,7 @@ namespace PaperlessClient.Mobile.ViewModels
 
         private async Task Login() {
             if (!TryParseEndpoint(Endpoint, out Uri endpintUri)) {
-                await notificationService.NotifyIfInForeground(this, "Fehler", "Ungültige Serveradresse");
+                await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.InvalidServerText);
                 return;
             }
 
@@ -58,7 +59,7 @@ namespace PaperlessClient.Mobile.ViewModels
             }
 
             if (!success)
-                await notificationService.NotifyIfInForeground(this, "Fehler", "Bei der Anmeldung ist ein Fehler aufgetreten");
+                await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.LoginFailedText);
             else
                 setupTcs.SetResult(true);
         }

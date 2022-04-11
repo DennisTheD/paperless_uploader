@@ -1,4 +1,5 @@
 ﻿using PaperlessClient.Mobile.NavigationHints;
+using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace PaperlessClient.Mobile.ViewModels
 
             if (fileUri == null
                 || !fileUri.IsFile) {
-                await notificationService.NotifyIfInForeground(this, "Fehler", "Die angegebene Datei ist ungültig.");
+                await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.InvalidFileText);
                 await navigationService.PopAsync();
                 return;
             }
@@ -66,9 +67,10 @@ namespace PaperlessClient.Mobile.ViewModels
             {
                 await apiService.UploadInForeground(fileUri, Name);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await notificationService.NotifyIfInForeground(this, "Fehler", "Beim Upload der Datei ist ein Fehler aufgetreten");
+                await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.UploadFailedText);
+                return;
             }
             finally { 
                 IsBusy = false;

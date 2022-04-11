@@ -7,6 +7,6 @@
     BackgroundColor="{StaticResource Primary}">
 
     <TabBar>
-        <ShellContent ContentTemplate="{DataTemplate views:UploadPage}" />
+        <ShellContent ContentTemplate="{DataTemplate views:LandingPage}" />
     </TabBar>
 </Shell>

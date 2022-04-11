@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.ViewModels"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
+    x:Class="PaperlessClient.Mobile.Views.LandingPage"
+    Title="Paperless">
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackLayout 
+                Grid.Row="1"
+                Padding="5,10,5,10">
+                <Image  
+                    HorizontalOptions="Center"
+                    Source="logo-dark.png" />
+                
+                <Label
+                    HorizontalOptions="Center"
+                    Text="{ext:Translate ReadyText}" />
+
+                <Label
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="{ext:Translate ShareExplanationText}" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

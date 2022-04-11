@@ -6,6 +6,7 @@
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     x:Class="PaperlessClient.Mobile.Views.SetupPage"
     Padding="10,10,10,10"
     NavigationPage.HasNavigationBar="True"
@@ -36,19 +37,19 @@
 
                 <Image Source="logo-dark.png" />
 
-                <Label Text="Server" />
+                <Label Text="{ext:Translate ServerText}" />
                 <Entry 
                 Text="{Binding Endpoint}"
                 Keyboard="{StaticResource NoCapitalizationKeyboard}"
                 Placeholder="http(s)://paperless.myserever.com" />
 
-                <Label Text="Benutzername" />
+                <Label Text="{ext:Translate UsernameText}" />
                 <Entry 
                 Text="{Binding Username}"
                 Keyboard="{StaticResource NoCapitalizationKeyboard}"
                 Placeholder="" />
 
-                <Label Text="Passwort" />
+                <Label Text="{ext:Translate PasswordText}" />
                 <Entry            
                 Text="{Binding Password}"
                 IsPassword="True"
@@ -57,7 +58,7 @@
                 <Button 
                     Command="{Binding LoginCommand}"
                     IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                    Text="Anmelden" />
+                    Text="{ext:Translate LoginText}" />
 
                 <ActivityIndicator 
                     IsVisible="{Binding IsBusy}"

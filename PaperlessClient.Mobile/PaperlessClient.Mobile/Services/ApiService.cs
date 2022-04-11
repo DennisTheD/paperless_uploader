@@ -100,27 +100,20 @@ namespace PaperlessClient.Mobile.Services
             return false;
         }
 
-        public async Task<bool> UploadInForeground(
+        public async Task UploadInForeground(
             Uri fileUri
             , string documentTitle = null) {
             if (!fileUri.IsFile)
-                return false;
+                throw new InvalidOperationException("Document to upload should be a file");
 
             var fileName = Path.GetFileName(fileUri.LocalPath);
             using (var content = new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture)))
             using(var fs = new FileStream(path: fileUri.LocalPath, mode: FileMode.Open)) {
                 content.Add(new StreamContent(fs), "document", fileName);
                 content.Add(new StringContent(documentTitle ?? fileName), "title");
-                try
-                {
-                    var result = await httpClient.PostAsync(UPLOAD_ENDPOINT, content);
-                    var response = await result.Content.ReadAsStringAsync();
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                var result = await httpClient.PostAsync(UPLOAD_ENDPOINT, content);
+                result.EnsureSuccessStatusCode();
+                var response = await result.Content.ReadAsStringAsync();
             }            
         }
     }

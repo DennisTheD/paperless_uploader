@@ -9,6 +9,6 @@ namespace PaperlessClient.Mobile.Services.Abstraction
     {
         Task<bool> IsSetupComplete();
         Task<bool> Login(Uri endpoint, string username, string password);
-        Task<bool> UploadInForeground(Uri fileUri, string documentTitle = null);
+        Task UploadInForeground(Uri fileUri, string documentTitle = null);
     }
 }

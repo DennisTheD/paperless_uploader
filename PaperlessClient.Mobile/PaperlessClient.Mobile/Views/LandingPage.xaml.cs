@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PaperlessClient.Mobile.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,9 @@ using Xamarin.Forms.Xaml;
 namespace PaperlessClient.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class UploadPage : ContentPage
+    public partial class LandingPage : ContentPage
     {
-        public UploadPage()
+        public LandingPage()
         {
             InitializeComponent();
         }
