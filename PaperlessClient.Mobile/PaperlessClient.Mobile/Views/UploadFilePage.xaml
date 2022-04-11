@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:CustomContentPage
+    x:TypeArguments="vms:UploadFileViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    x:Class="PaperlessClient.Mobile.Views.UploadFilePage"
+    Title="Hochladen"
+    Padding="5,10,5,10">
+
+    <ContentPage.Content>
+        <StackLayout
+            Padding="5,10,5,10"
+            VerticalOptions="FillAndExpand">
+            <Label Text="Name" />
+            <Entry 
+                Text="{Binding Name}"
+                Placeholder="Dateiname" />
+
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+            
+            <Button 
+                Command="{Binding UploadCommand}"
+                Text="Hochladen" 
+                VerticalOptions="EndAndExpand" />
+        </StackLayout>
+    </ContentPage.Content>
+</views:CustomContentPage>
