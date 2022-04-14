@@ -15,6 +15,7 @@ namespace PaperlessClient.Mobile.Services.Abstraction
         Task<T> GetAsync<T>(string key);
         Task<List<T>> GetAllAsync<T>();
         Task<T> GetSecureAsync<T>(string key);
+        Task<List<T>> GetAllSecureAsync<T>();
         Task DeleteSecureAsync(string key);
     }
 }

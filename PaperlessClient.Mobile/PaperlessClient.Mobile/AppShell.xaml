@@ -2,11 +2,20 @@
 <Shell 
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
     x:Class="PaperlessClient.Mobile.AppShell"
     BackgroundColor="{StaticResource Primary}">
 
-    <TabBar>
+    <FlyoutItem
+        Title="Paperless">
+        
         <ShellContent ContentTemplate="{DataTemplate views:LandingPage}" />
-    </TabBar>
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="{ext:Translate TennantsText}">
+
+        <ShellContent ContentTemplate="{DataTemplate views:TennantListPage}" />
+    </FlyoutItem>
 </Shell>

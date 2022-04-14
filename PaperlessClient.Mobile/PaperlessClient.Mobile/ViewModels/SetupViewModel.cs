@@ -13,6 +13,12 @@ namespace PaperlessClient.Mobile.ViewModels
         private TaskCompletionSource<bool> setupTcs = new TaskCompletionSource<bool>();
         public Task SetupTask => setupTcs.Task;
 
+
+        private string tennantName;
+        public string TennantName { 
+            get => tennantName;
+            set => SetProperty(ref tennantName, value);
+        }
         public string Endpoint { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -27,14 +33,14 @@ namespace PaperlessClient.Mobile.ViewModels
             }
         }
 
-        private IApiService apiService;
+        private ITenantService tenantService;
 
         public SetupViewModel(
-            IApiService apiService
-            , INotificationService notificationService) 
+            INotificationService notificationService
+            , ITenantService tenantService) 
             : base(notificationService)
         {
-            this.apiService = apiService;
+            this.tenantService = tenantService;
         }
 
         public override Task InitializeAsync(object parameter)
@@ -48,10 +54,14 @@ namespace PaperlessClient.Mobile.ViewModels
                 return;
             }
 
+            if (string.IsNullOrEmpty(TennantName)) { 
+                TennantName = endpintUri.ToString();
+            }
+
             IsBusy = true;
             var success = false;
             try{
-                success = await apiService.Login(endpintUri, Username, Password);
+                success = await tenantService.Login(endpintUri, Username, Password, TennantName);
             }
             catch (Exception){}
             finally {

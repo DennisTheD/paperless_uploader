@@ -13,98 +13,17 @@ using System.Threading.Tasks;
 namespace PaperlessClient.Mobile.Services
 {
     public class ApiService : IApiService
-    {
-        private static readonly string LOGIN_ENDPOINT = "api/token/";
+    {        
         private static readonly string UPLOAD_ENDPOINT = "api/documents/post_document/";
+        private ITenantService tenantService;
 
-        private static readonly string API_CONFIG_KEY = "api_config";
-        private IPersistenceService persistenceService;
-        private INotificationService notificationService;
-
-        private ApiSetup apiSetup;
-        private HttpClient httpClient;
 
         public ApiService(
-            IPersistenceService persistenceService
-            , INotificationService notificationService)
+            ITenantService tennantService)
         {
-            this.persistenceService = persistenceService;
-            this.notificationService = notificationService;
-            httpClient = new HttpClient();
+            this.tenantService = tennantService;
         }
 
-        public async Task<bool> IsSetupComplete() {
-            if (apiSetup != null)
-                return true;
-
-            try
-            {
-                apiSetup = await persistenceService.GetSecureAsync<ApiSetup>(API_CONFIG_KEY);
-            }
-            catch (KeyNotFoundException)
-            {
-                return false;
-            }
-            catch (Exception ex) { 
-                System.Diagnostics.Debug.WriteLine($"Failed to get api setup from storage service: {ex.Message}");
-                throw;
-            }
-
-            if (apiSetup != null) {
-                httpClient.BaseAddress = new Uri(apiSetup.Endpoint);
-                httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Token", apiSetup.Token);
-                return true;
-            }
-
-            return false;
-        }
-
-        public async Task<bool> Login(Uri endpoint, string username, string password) {
-            // prepare the login request
-            var loginRequest = new ApiLoginRequest(username, password);
-            var requestText = JsonConvert.SerializeObject(loginRequest);
-            var requestContent = new StringContent(requestText, Encoding.UTF8, "application/json");
-            var loginClient = new HttpClient();
-            loginClient.BaseAddress = endpoint;
-
-            // send the login response
-            ApiLoginResponse loginResponse = null;
-            try
-            {
-                var response = await loginClient.PostAsync(LOGIN_ENDPOINT, requestContent);
-                response.EnsureSuccessStatusCode();
-                var responseText = await response.Content.ReadAsStringAsync();
-                loginResponse = JsonConvert.DeserializeObject<ApiLoginResponse>(responseText); // parse the token
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            // check if we got a token
-            if (!string.IsNullOrWhiteSpace(loginResponse?.Token)) {
-                httpClient.BaseAddress = endpoint;
-                httpClient.DefaultRequestHeaders.Authorization =
-                        new AuthenticationHeaderValue("Token", loginResponse.Token);               
-
-                apiSetup = new ApiSetup() { 
-                    Endpoint = endpoint.ToString(),
-                    Token = loginResponse.Token
-                };
-                await persistenceService.PersistSecureAsync(API_CONFIG_KEY, apiSetup); // persist the token
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public async Task Logout() {
-            httpClient = new HttpClient();
-            apiSetup = null;
-            await persistenceService.DeleteSecureAsync(API_CONFIG_KEY);
-        }
 
         public async Task UploadInForeground(
             Uri fileUri
@@ -113,8 +32,14 @@ namespace PaperlessClient.Mobile.Services
                 throw new InvalidOperationException("Document to upload should be a file");
 
             var fileName = Path.GetFileName(fileUri.LocalPath);
+            using(var httpClient = new HttpClient())
             using (var content = new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture)))
             using(var fs = new FileStream(path: fileUri.LocalPath, mode: FileMode.Open)) {
+                var currentTennant = tenantService.GetCurrentTennant();
+                httpClient.BaseAddress = new Uri(currentTennant.Endpoint);
+                httpClient.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Token", currentTennant.Token);
+
                 content.Add(new StreamContent(fs), "document", fileName);
                 content.Add(new StringContent(documentTitle ?? fileName), "title");
                 var result = await httpClient.PostAsync(UPLOAD_ENDPOINT, content);

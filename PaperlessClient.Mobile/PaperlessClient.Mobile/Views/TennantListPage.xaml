@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:TopLevelContentPage 
+    x:TypeArguments="vms:TennantListViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
+    xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
+    x:Class="PaperlessClient.Mobile.Views.TennantListPage"
+    Title="{ext:Translate TennantsText}">
+    
+    <ContentPage.Content>
+        <ListView
+            IsPullToRefreshEnabled="False"
+            IsRefreshing="{Binding IsBusy}"
+            RefreshCommand="{Binding RefreshCommand}"
+            ItemsSource="{Binding Items}">
+
+            <ListView.Behaviors>
+                <behaviors:EventToCommandBehavior EventName="ItemSelected" Command="{Binding ItemSelectedCommand}"  />
+            </ListView.Behaviors>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" Detail="{Binding Endpoint}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</views:TopLevelContentPage>

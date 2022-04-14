@@ -12,7 +12,7 @@ namespace PaperlessClient.Mobile
     public partial class App : Application
     {
         private INavigationService navigationService;      
-        private IApiService apiService;
+        private ITenantService tenantService;
 
         public App()
         {
@@ -22,7 +22,7 @@ namespace PaperlessClient.Mobile
             MessagingCenter.Subscribe<LogoutRequest>(this, nameof(LogoutRequest), LogoutRequestReceived);
 
             navigationService = ServiceLocator.Resolve<INavigationService>();
-            apiService = ServiceLocator.Resolve<IApiService>();
+            tenantService = ServiceLocator.Resolve<ITenantService>();
 
             MainPage = new LoadingPage();
 
@@ -33,7 +33,6 @@ namespace PaperlessClient.Mobile
 
         private async void LogoutRequestReceived(LogoutRequest obj)
         {
-            await apiService.Logout();
             await InitializeAsync();
         }
 
@@ -51,6 +50,7 @@ namespace PaperlessClient.Mobile
         }
 
         private async Task InitializeAsync() {
+            await tenantService.InitializeAsync();
             await navigationService.InitializeAsync();
         }
 

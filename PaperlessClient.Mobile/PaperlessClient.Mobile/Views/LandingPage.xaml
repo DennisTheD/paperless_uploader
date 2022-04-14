@@ -9,14 +9,6 @@
     x:Class="PaperlessClient.Mobile.Views.LandingPage"
     Title="Paperless">
 
-    
-    <ContentPage.ToolbarItems>
-        <ToolbarItem 
-            Command="{Binding LogoutCommand}"
-            Text="{ext:Translate LogoutText}" />
-    </ContentPage.ToolbarItems>
-    
-
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>

@@ -61,6 +61,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die New ähnelt.
+        /// </summary>
+        public static string AddText {
+            get {
+                return ResourceManager.GetString("AddText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
         /// </summary>
         public static string ErrorText {
@@ -147,6 +156,15 @@ namespace PaperlessClient.Mobile.Resources {
         public static string ShareExplanationText {
             get {
                 return ResourceManager.GetString("ShareExplanationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Tennants ähnelt.
+        /// </summary>
+        public static string TennantsText {
+            get {
+                return ResourceManager.GetString("TennantsText", resourceCulture);
             }
         }
         

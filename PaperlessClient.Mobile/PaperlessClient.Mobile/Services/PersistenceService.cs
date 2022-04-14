@@ -42,6 +42,11 @@ namespace PaperlessClient.Mobile.Services
             return await _secure.GetObject<T>(key);
         }
 
+        public async Task<List<T>> GetAllSecureAsync<T>()
+        {
+            return (await _secure.GetAllObjects<T>()).ToList();
+        }
+
         public async Task<T> GetOrFetchObjectAsync<T>(string key, Func<Task<T>> fetchFunc, DateTimeOffset? absoluteExpiration = null)
         {
             return await _cache.GetOrFetchObject<T>(key, fetchFunc, absoluteExpiration);

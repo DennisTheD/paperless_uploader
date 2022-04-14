@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddText" xml:space="preserve">
+    <value>Neu</value>
+  </data>
   <data name="ErrorText" xml:space="preserve">
     <value>Fehler</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="ShareExplanationText" xml:space="preserve">
     <value>Benutze den "Teilen" Button auf deinem Gerät um Dokumente an diese App zu senden</value>
+  </data>
+  <data name="TennantsText" xml:space="preserve">
+    <value>Mandanten</value>
   </data>
   <data name="TitleText" xml:space="preserve">
     <value>Titel</value>

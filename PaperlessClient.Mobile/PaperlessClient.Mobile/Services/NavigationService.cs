@@ -12,7 +12,7 @@ namespace PaperlessClient.Mobile.Services
 {
     public class NavigationService : INavigationService
     {
-        private IApiService apiService;        
+        private ITenantService tenantService;
 
         public ViewModelBase ActiveViewModel { get; set; }
         public ViewModelBase PreviousPageViewModel { get; set; }
@@ -21,14 +21,14 @@ namespace PaperlessClient.Mobile.Services
         public Task InitializationTask => initializationTcs.Task;
 
 
-        public NavigationService(IApiService apiService)
+        public NavigationService(ITenantService tennantService)
         {
-            this.apiService = apiService;
+            this.tenantService = tennantService;
         }
 
         public async Task InitializeAsync()
         {
-            if (await apiService.IsSetupComplete())
+            if (tenantService.GetCurrentTennant() != null)
             {
                 var shell = new AppShell();
                 shell.OnNavigatingBackwards += Shell_OnNavigatingBackwards;

@@ -22,6 +22,7 @@ namespace PaperlessClient.Mobile.Services
             var builder = new ContainerBuilder();
             builder.RegisterType<PersistenceService>().As<IPersistenceService>().SingleInstance();
             builder.RegisterType<NotificationService>().As<INotificationService>().SingleInstance();
+            builder.RegisterType<TenantService>().As<ITenantService>().SingleInstance();
             builder.RegisterType<ApiService>().As<IApiService>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
 
@@ -29,6 +30,7 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<SetupViewModel>().AsSelf();
             builder.RegisterType<UploadFileViewModel>().AsSelf();
             builder.RegisterType<LandingViewModel>().AsSelf();
+            builder.RegisterType<TennantListViewModel>().AsSelf();
 
             _container = builder.Build();
             setupComplete = true;
