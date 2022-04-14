@@ -36,6 +36,12 @@ namespace PaperlessClient.Mobile.Services
                 initializationTcs.SetResult(true);
             }
             else {
+                // initialization was completed before, but a logout was completed
+                // reset the initialization state
+                if (initializationTcs.Task.IsCompleted) { 
+                    initializationTcs = new TaskCompletionSource<bool> ();
+                }
+
                 SetupPage setupPage;
                 Application.Current.MainPage 
                     = setupPage

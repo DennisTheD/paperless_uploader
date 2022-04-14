@@ -102,6 +102,7 @@ namespace PaperlessClient.Mobile.Services
 
         public async Task Logout() {
             httpClient = new HttpClient();
+            apiSetup = null;
             await persistenceService.DeleteSecureAsync(API_CONFIG_KEY);
         }
 
