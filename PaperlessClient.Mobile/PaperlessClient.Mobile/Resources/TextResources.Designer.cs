@@ -160,6 +160,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Tenenant name ähnelt.
+        /// </summary>
+        public static string TenantNameText {
+            get {
+                return ResourceManager.GetString("TenantNameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Tennants ähnelt.
         /// </summary>
         public static string TennantsText {

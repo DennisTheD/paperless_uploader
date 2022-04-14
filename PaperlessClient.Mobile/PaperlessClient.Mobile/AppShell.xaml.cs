@@ -17,15 +17,16 @@ namespace PaperlessClient.Mobile
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(UploadFilePage), typeof(UploadFilePage));
+            Routing.RegisterRoute(nameof(SetupPage), typeof(SetupPage));
         }
 
         protected override void OnNavigated(ShellNavigatedEventArgs args)
         {
             base.OnNavigated(args);
-            //if (args.Source == ShellNavigationSource.Pop)
-            //{
-            //    OnNavigatingBackwards?.Invoke(this, args);
-            //}
+            if (args.Source == ShellNavigationSource.Pop)
+            {
+                OnNavigatingBackwards?.Invoke(this, args);
+            }
         }
 
         public event EventHandler<ShellNavigatedEventArgs> OnNavigatingBackwards;

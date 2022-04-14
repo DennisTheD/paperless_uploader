@@ -9,13 +9,20 @@
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     x:Class="PaperlessClient.Mobile.Views.TennantListPage"
     Title="{ext:Translate TennantsText}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding AddCommand}"
+            Text="{ext:Translate AddText}"/>
+    </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
         <ListView
             IsPullToRefreshEnabled="False"
             IsRefreshing="{Binding IsBusy}"
             RefreshCommand="{Binding RefreshCommand}"
-            ItemsSource="{Binding Items}">
+            ItemsSource="{Binding Items}"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
 
             <ListView.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="ItemSelected" Command="{Binding ItemSelectedCommand}"  />

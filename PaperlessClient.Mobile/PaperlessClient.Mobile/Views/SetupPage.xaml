@@ -37,23 +37,27 @@
 
                 <Image Source="logo-dark.png" />
 
+                <Label Text="{ext:Translate TenantNameText}" />
+                <Entry 
+                    Text="{Binding TennantName}" />
+
                 <Label Text="{ext:Translate ServerText}" />
                 <Entry 
-                Text="{Binding Endpoint}"
-                Keyboard="{StaticResource NoCapitalizationKeyboard}"
-                Placeholder="http(s)://paperless.myserever.com" />
+                    Text="{Binding Endpoint}"
+                    Keyboard="{StaticResource NoCapitalizationKeyboard}"
+                    Placeholder="http(s)://paperless.myserever.com" />
 
                 <Label Text="{ext:Translate UsernameText}" />
                 <Entry 
-                Text="{Binding Username}"
-                Keyboard="{StaticResource NoCapitalizationKeyboard}"
-                Placeholder="" />
+                    Text="{Binding Username}"
+                    Keyboard="{StaticResource NoCapitalizationKeyboard}"
+                    Placeholder="" />
 
                 <Label Text="{ext:Translate PasswordText}" />
                 <Entry            
-                Text="{Binding Password}"
-                IsPassword="True"
-                Placeholder="" />
+                    Text="{Binding Password}"
+                    IsPassword="True"
+                    Placeholder="" />
 
                 <Button 
                     Command="{Binding LoginCommand}"

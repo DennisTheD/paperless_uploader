@@ -150,6 +150,9 @@
   <data name="ShareExplanationText" xml:space="preserve">
     <value>Use the share button on your device to send documents into this app</value>
   </data>
+  <data name="TenantNameText" xml:space="preserve">
+    <value>Tenenant name</value>
+  </data>
   <data name="TennantsText" xml:space="preserve">
     <value>Tennants</value>
   </data>

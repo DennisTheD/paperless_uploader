@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.Resources;
+﻿using PaperlessClient.Mobile.NavigationHints;
+using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace PaperlessClient.Mobile.ViewModels
         private TaskCompletionSource<bool> setupTcs = new TaskCompletionSource<bool>();
         public Task SetupTask => setupTcs.Task;
 
+        private Action onSuccessAction;
 
         private string tennantName;
         public string TennantName { 
@@ -45,6 +47,10 @@ namespace PaperlessClient.Mobile.ViewModels
 
         public override Task InitializeAsync(object parameter)
         {
+            if (parameter is SetupNavigationHint navigationHint) {
+                onSuccessAction = navigationHint.OnSuccess;
+            }
+
             return Task.CompletedTask;
         }
 
@@ -69,9 +75,13 @@ namespace PaperlessClient.Mobile.ViewModels
             }
 
             if (!success)
+            {
                 await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.LoginFailedText);
-            else
+            }
+            else {
                 setupTcs.SetResult(true);
+                onSuccessAction?.Invoke();
+            }
         }
 
         private bool TryParseEndpoint(string endpoint, out Uri uri) { 
