@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
     xmlns:ts="clr-namespace:PaperlessClient.Mobile.TemplateSelectors"
+    xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
     x:Class="PaperlessClient.Mobile.AppShell"
     BackgroundColor="{StaticResource Primary}">
 
@@ -13,7 +15,9 @@
             <DataTemplate x:Key="defaultTenantTemplate">
                 <StackLayout>
                     <Button BackgroundColor="LightGray"
-                            Text="{Binding yourText}"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type vms:AppShellViewModel}}, Path=ChnageTenantCommand}"
+                            CommandParameter="{Binding .}"
+                            Text="{Binding Name}"
                             TextColor="White"
                             FontSize="Small"
                             BorderWidth="1"
@@ -31,7 +35,7 @@
             <DataTemplate x:Key="activeTenantTemplate">
                 <StackLayout>
                     <Button BackgroundColor="{StaticResource Primary}"
-                            Text="{Binding yourText}"
+                            Text="{Binding Name}"
                             TextColor="White"
                             FontSize="Small"
                             BorderWidth="1"

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace PaperlessClient.Mobile.ViewModels
 {
@@ -17,6 +18,23 @@ namespace PaperlessClient.Mobile.ViewModels
             set => SetProperty(ref tenants, value);
         }
 
+        private Command changeTenantCommand;
+        public Command ChnageTenantCommand {
+            get {
+                if (changeTenantCommand == null) {
+                    changeTenantCommand = new Command(ChangeTenant);
+                }
+                return changeTenantCommand;
+            }
+        }
+
+        private async void ChangeTenant(object obj)
+        {
+            if (obj is ApiSetup tenant) { 
+                tenantService.ChangeTenant(tenant);
+            }
+            Tenants = await tenantService.GetTennants();
+        }
 
         public AppShellViewModel(
             INotificationService notificationService

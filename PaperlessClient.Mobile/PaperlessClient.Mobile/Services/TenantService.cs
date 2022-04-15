@@ -89,6 +89,10 @@ namespace PaperlessClient.Mobile.Services
         public ApiSetup GetCurrentTennant()
             => activeTennant;
 
+        public void ChangeTenant(ApiSetup tenant) {
+            activeTennant = tenant;
+        }
+
         public Task<List<ApiSetup>> GetTennants()
             => persistenceService.GetAllSecureAsync<ApiSetup>();
         

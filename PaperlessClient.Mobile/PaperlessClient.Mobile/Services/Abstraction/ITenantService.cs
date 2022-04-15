@@ -19,5 +19,6 @@ namespace PaperlessClient.Mobile.Services.Abstraction
             , bool setAsDefault = false);
 
         Task<List<ApiSetup>> GetTennants();
+        void ChangeTenant(ApiSetup tenant);
     }
 }
