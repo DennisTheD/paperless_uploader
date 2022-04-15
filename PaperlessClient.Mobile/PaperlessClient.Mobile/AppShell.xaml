@@ -4,8 +4,65 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:ts="clr-namespace:PaperlessClient.Mobile.TemplateSelectors"
     x:Class="PaperlessClient.Mobile.AppShell"
     BackgroundColor="{StaticResource Primary}">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="defaultTenantTemplate">
+                <StackLayout>
+                    <Button BackgroundColor="LightGray"
+                            Text="{Binding yourText}"
+                            TextColor="White"
+                            FontSize="Small"
+                            BorderWidth="1"
+                            BorderRadius="35"
+                            WidthRequest="70"
+                            HeightRequest="70"
+                            HorizontalOptions="Start"
+                            Margin="5,0,0,0"
+                            BorderColor="Transparent" />
+
+                    <Label HorizontalTextAlignment="Center" Text="{Binding Name}" />
+                </StackLayout>
+            </DataTemplate>
+
+            <DataTemplate x:Key="activeTenantTemplate">
+                <StackLayout>
+                    <Button BackgroundColor="{StaticResource Primary}"
+                            Text="{Binding yourText}"
+                            TextColor="White"
+                            FontSize="Small"
+                            BorderWidth="1"
+                            BorderRadius="35"
+                            WidthRequest="70"
+                            HeightRequest="70"
+                            HorizontalOptions="Start"
+                            Margin="5,0,0,0"
+                            BorderColor="Transparent" />
+
+                    <Label HorizontalTextAlignment="Center" Text="{Binding Name}" FontAttributes="Bold" />
+                </StackLayout>
+            </DataTemplate>
+
+
+            <ts:TenantListDisplaySelector
+                x:Key="tenantTemplateSelector"
+                DefaultTemplate="{StaticResource defaultTenantTemplate}"
+                ActiveTemplate="{StaticResource activeTenantTemplate}"/>
+            
+        </ResourceDictionary>
+    </Shell.Resources>
+    
+    <Shell.FlyoutHeader>
+        <CollectionView
+            ItemsSource="{Binding Tenants}"
+            ItemsLayout="HorizontalList"
+            HeightRequest="120"
+            ItemTemplate="{StaticResource tenantTemplateSelector}">
+        </CollectionView>
+    </Shell.FlyoutHeader>
 
     <FlyoutItem
         Title="Paperless">
@@ -18,4 +75,9 @@
 
         <ShellContent ContentTemplate="{DataTemplate views:TennantListPage}" />
     </FlyoutItem>
+
+    <ShellContent 
+        ContentTemplate="{DataTemplate views:UploadFilePage}" 
+        FlyoutItemIsVisible="False" 
+        Route="UploadFilePage" />
 </Shell>

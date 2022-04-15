@@ -13,6 +13,7 @@ namespace PaperlessClient.Mobile
     {
         private INavigationService navigationService;      
         private ITenantService tenantService;
+        private IFileUploadQueueService fileUploadQueueService;
 
         public App()
         {
@@ -23,6 +24,7 @@ namespace PaperlessClient.Mobile
 
             navigationService = ServiceLocator.Resolve<INavigationService>();
             tenantService = ServiceLocator.Resolve<ITenantService>();
+            fileUploadQueueService = ServiceLocator.Resolve<IFileUploadQueueService>();
 
             MainPage = new LoadingPage();
 
@@ -39,14 +41,8 @@ namespace PaperlessClient.Mobile
         private async void UploadRequestReceived(FileUploadRequest uploadRequest)
         {
             await navigationService.InitializationTask;
-            await navigationService.NavigateToAsync(
-                nameof(UploadFilePage)
-                , new UploadFileNavigationHint()
-                {
-                    FileUri = uploadRequest.FileUri,
-                    Title = uploadRequest.FileTitle,
-                    DeleteFileAfterUpload = true
-                });
+            fileUploadQueueService.AddTask(uploadRequest);
+            await navigationService.NavigateToAsync("//" + nameof(UploadFilePage));
         }
 
         private async Task InitializeAsync() {

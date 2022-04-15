@@ -86,7 +86,8 @@ namespace PaperlessClient.Mobile.Services
             {
                 ActiveViewModel.Page = page;
             }
-            await (page?.BindingContext as ViewModelBase)?.InitializeAsync(parameter);
+            if(page != null)
+                await (page?.BindingContext as ViewModelBase)?.InitializeAsync(parameter);
         }
 
         private async void Shell_OnNavigatingBackwards(object sender, ShellNavigatedEventArgs e)

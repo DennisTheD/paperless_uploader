@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.NavigationHints;
+﻿using PaperlessClient.Mobile.Models;
+using PaperlessClient.Mobile.NavigationHints;
 using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
 using System;
@@ -17,6 +18,7 @@ namespace PaperlessClient.Mobile.ViewModels
 
         private IApiService apiService;
         private INavigationService navigationService;
+        private IFileUploadQueueService fileUploadQueueService;
 
         private string name;
         public string Name {
@@ -37,16 +39,28 @@ namespace PaperlessClient.Mobile.ViewModels
         public UploadFileViewModel(
             IApiService apiService
             , INavigationService navigationService
-            , INotificationService notificationService) 
+            , INotificationService notificationService
+            , IFileUploadQueueService fileUploadQueueService) 
             : base(notificationService)
         {
             this.apiService = apiService;
+            this.fileUploadQueueService = fileUploadQueueService;
             this.navigationService = navigationService;
+
+            if (fileUploadQueueService.GetTask(out FileUploadRequest uploadRequest))
+            {
+                fileUri = uploadRequest.FileUri;
+                deleteFileAfterUpload = true;
+                Name = uploadRequest.FileTitle;
+
+                InitializeAsync(null);
+            }
         }
 
         public override async Task InitializeAsync(object parameter)
         {
-            if (parameter is UploadFileNavigationHint navigationHint) { 
+            if (parameter is UploadFileNavigationHint navigationHint)
+            {
                 fileUri = navigationHint.FileUri;
                 deleteFileAfterUpload = navigationHint.DeleteFileAfterUpload;
                 Name = navigationHint.Title;

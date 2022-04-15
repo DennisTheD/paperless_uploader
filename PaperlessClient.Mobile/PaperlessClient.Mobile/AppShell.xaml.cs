@@ -1,4 +1,6 @@
-﻿using PaperlessClient.Mobile.Views;
+﻿using PaperlessClient.Mobile.Services;
+using PaperlessClient.Mobile.ViewModels;
+using PaperlessClient.Mobile.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,14 @@ namespace PaperlessClient.Mobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AppShell : Shell
     {
+        AppShellViewModel vm;
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(UploadFilePage), typeof(UploadFilePage));
+            BindingContext = vm = ServiceLocator.Resolve<AppShellViewModel>();
+            vm.InitializeAsync(null);
+
+            //Routing.RegisterRoute(nameof(UploadFilePage), typeof(UploadFilePage));
             Routing.RegisterRoute(nameof(SetupPage), typeof(SetupPage));
         }
 
