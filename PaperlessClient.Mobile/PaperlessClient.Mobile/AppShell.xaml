@@ -54,7 +54,9 @@
             <ts:TenantListDisplaySelector
                 x:Key="tenantTemplateSelector"
                 DefaultTemplate="{StaticResource defaultTenantTemplate}"
-                ActiveTemplate="{StaticResource activeTenantTemplate}"/>
+                PrimaryTemplate="{StaticResource defaultTenantTemplate}"
+                ActiveTemplate="{StaticResource activeTenantTemplate}"
+                ActivePrimaryTemplate="{StaticResource activeTenantTemplate}"/>
             
         </ResourceDictionary>
     </Shell.Resources>

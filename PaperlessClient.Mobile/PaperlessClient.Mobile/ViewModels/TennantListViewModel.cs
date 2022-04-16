@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.Models;
+﻿using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.NavigationHints;
 using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
@@ -40,6 +41,16 @@ namespace PaperlessClient.Mobile.ViewModels
                 return setDefaultTenantCommand;
             }
         }
+
+        private Command setActiveTenantCommand;
+        public Command SetActiveTenantCommand {
+            get {
+                if (setActiveTenantCommand == null) {
+                    setActiveTenantCommand = new Command(SetActiveTenant);
+                }
+                return setActiveTenantCommand;
+            } 
+        }        
         #endregion
 
 
@@ -53,34 +64,24 @@ namespace PaperlessClient.Mobile.ViewModels
             this.navigationService = navigationService;
             this.tenantService = tenantService;
             AddCommand = new Command(AddTennant);
+
+            MessagingCenter.Subscribe<TenantListChangedEvent>(this, nameof(TenantListChangedEvent), async (e) => { await RefreshTenantList(e); });
+            MessagingCenter.Subscribe<TenantChangedEvent>(this, nameof(TenantChangedEvent), async (e) => { await RefreshTenantList(e); });
+            MessagingCenter.Subscribe<DefaultTenantChnagedEvent>(this, nameof(DefaultTenantChnagedEvent), async (e) => { await RefreshTenantList(e); });
         }
         
         public override async Task InitializeAsync(object parameter)
         {
-            await Refresh(
-                fetchFunc
-                , getAndFetchFunc
-                , (items) => {
-                    Items = new ObservableCollection<ApiSetup>(items);
-                    customChangeNotificationRegistrations.ForEach(p => OnPropertyChanged(p));
-                }, true);
+            await RefreshTenantList(parameter);
         }
 
         private async void AddTennant(object obj)
         {
             await navigationService.NavigateToAsync(
                 nameof(SetupPage)
-                , new SetupNavigationHint() { 
-                    
+                , new SetupNavigationHint() {                     
                     OnSuccess = async () => { 
                         await navigationService.PopAsync();
-                        await Refresh(
-                            fetchFunc
-                            , getAndFetchFunc
-                            , (items) => {
-                                Items = new ObservableCollection<ApiSetup>(items);
-                                customChangeNotificationRegistrations.ForEach(p => OnPropertyChanged(p));
-                        }, true);
                     }
                 });
         }
@@ -101,7 +102,6 @@ namespace PaperlessClient.Mobile.ViewModels
                 && confirmationResult == TextResources.YesText) {
 
                 await tenantService.DeleteTenant(tenant);
-                await InitializeAsync(null);
             }
         }
 
@@ -112,9 +112,27 @@ namespace PaperlessClient.Mobile.ViewModels
             }
         }
 
+        private void SetActiveTenant(object obj)
+        {
+            if (obj is ApiSetup tenant) {
+                tenantService.ChangeTenant(tenant);
+            }
+        }
+
         private static List<ApiSetup> TennantFilter(string arg1, List<ApiSetup> arg2)
         {
             return arg2;
+        }
+
+        private async Task RefreshTenantList(object obj)
+        {
+            await Refresh(
+                fetchFunc
+                , getAndFetchFunc
+                , (items) => {
+                    Items = new ObservableCollection<ApiSetup>(items);
+                    customChangeNotificationRegistrations.ForEach(p => OnPropertyChanged(p));
+                }, true);
         }
     }
 }

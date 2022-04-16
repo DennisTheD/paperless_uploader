@@ -14,6 +14,8 @@ namespace PaperlessClient.Mobile.TemplateSelectors
 
         public DataTemplate DefaultTemplate { get; set; }
         public DataTemplate ActiveTemplate { get; set; }
+        public DataTemplate PrimaryTemplate { get; set; }
+        public DataTemplate ActivePrimaryTemplate { get; set; }
 
         public TenantListDisplaySelector()
         {
@@ -24,8 +26,18 @@ namespace PaperlessClient.Mobile.TemplateSelectors
         {
             var activeTenant = tenantService.GetCurrentTennant();
             if (item is ApiSetup tenant) {
+
                 if (tenant.Endpoint == activeTenant.Endpoint) {
+                    if (tenantService.IsDefaultTenant(tenant))
+                    {
+                        return ActivePrimaryTemplate;
+                    }
+
                     return ActiveTemplate;
+                }
+
+                if (tenantService.IsDefaultTenant(tenant)) {
+                    return PrimaryTemplate;
                 }
             }
 

@@ -150,10 +150,23 @@ namespace PaperlessClient.Mobile.Services
 
         public async Task SetDefaultTenant(ApiSetup tenant)
         {
-            defaultTennantKey = $"{TENNANT_SETUP_PREFIX}{activeTennant.Endpoint}";
+            defaultTennantKey = $"{TENNANT_SETUP_PREFIX}{tenant.Endpoint}";
             await persistenceService.PersistSecureAsync(
                 DEFAULT_TENNANT_KEY
                 , defaultTennantKey);
+            // notify other components about the changed default tenant
+            MessagingCenter.Send(
+                new DefaultTenantChnagedEvent() { NewDefaultTenant = tenant }
+                , nameof(DefaultTenantChnagedEvent));
+        }
+
+        public bool IsDefaultTenant(ApiSetup tenant) {
+            if (string.IsNullOrWhiteSpace(tenant?.Endpoint)
+                || string.IsNullOrWhiteSpace(defaultTennantKey)) { 
+                return false;
+            }
+
+            return $"{TENNANT_SETUP_PREFIX}{tenant.Endpoint}" == defaultTennantKey;
         }
     }
 }

@@ -5,13 +5,260 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
-    xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
+    xmlns:ts="clr-namespace:PaperlessClient.Mobile.TemplateSelectors"
     xmlns:models="clr-namespace:PaperlessClient.Mobile.Models"
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     xmlns:fonts="clr-namespace:PaperlessClient.Mobile.Resources.Fonts"
     x:Class="PaperlessClient.Mobile.Views.TennantListPage"
     Title="{ext:Translate TennantsText}">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="StarColor">#FFA500</Color>
+
+            <DataTemplate x:Key="defaultTemplate">
+                <SwipeView>
+                    <SwipeView.RightItems>
+                        <SwipeItems Mode="Execute">
+                            <SwipeItem Text="{ext:Translate DeleteText}" 
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=DeleteTenantCommand}"
+                                           CommandParameter="{Binding .}">
+                                <SwipeItem.IconImageSource>
+                                    <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.DeleteBinFill}" />
+                                </SwipeItem.IconImageSource>
+                            </SwipeItem>
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+
+                    <SwipeView.LeftItems>
+                        <SwipeItem 
+                                    BackgroundColor="{StaticResource StarColor}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetDefaultTenantCommand}"
+                                    CommandParameter="{Binding .}">
+                            <SwipeItem.IconImageSource>
+                                <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.StarFill}" />
+                            </SwipeItem.IconImageSource>
+                        </SwipeItem>
+
+                        <SwipeItem 
+                                    BackgroundColor="{StaticResource Primary}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetActiveTenantCommand}"
+                                    CommandParameter="{Binding .}">
+                            <SwipeItem.IconImageSource>
+                                <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.LeafFill}" />
+                            </SwipeItem.IconImageSource>
+                        </SwipeItem>
+                    </SwipeView.LeftItems>
+
+                    <Grid Padding="5,10" x:DataType="models:ApiSetup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding Name}"
+                                    Grid.Row="0" 
+                                    LineBreakMode="NoWrap" 
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Start"/>
+
+                        <Label 
+                                    Grid.Row="1"
+                                    Text="{Binding Endpoint}" 
+                                    LineBreakMode="NoWrap" />
+                    </Grid>
+                </SwipeView>
+            </DataTemplate>
+
+            <DataTemplate x:Key="activeTemplate">
+                <SwipeView>
+                    <SwipeView.RightItems>
+                        <SwipeItems Mode="Execute">
+                            <SwipeItem Text="{ext:Translate DeleteText}" 
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=DeleteTenantCommand}"
+                                           CommandParameter="{Binding .}">
+                                <SwipeItem.IconImageSource>
+                                    <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.DeleteBinFill}" />
+                                </SwipeItem.IconImageSource>
+                            </SwipeItem>
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+
+                    <SwipeView.LeftItems>
+                        <SwipeItem 
+                                    BackgroundColor="{StaticResource StarColor}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetDefaultTenantCommand}"
+                                    CommandParameter="{Binding .}">
+                            <SwipeItem.IconImageSource>
+                                <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.StarFill}" />
+                            </SwipeItem.IconImageSource>
+                        </SwipeItem>
+                    </SwipeView.LeftItems>
+
+                    <Grid Padding="5,10" x:DataType="models:ApiSetup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding Name}"
+                                    Grid.Row="0" 
+                                    LineBreakMode="NoWrap" 
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Start"/>
+
+                        <Label 
+                                    Grid.Row="1"
+                                    Text="{Binding Endpoint}" 
+                                    LineBreakMode="NoWrap" />
+
+                        <Label 
+                                    Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    FontFamily="{StaticResource RemixiconFont}"
+                                    Text="{x:Static fonts:RemixiconFont.LeafFill}"
+                                    TextColor="{StaticResource Primary}"
+                                    VerticalOptions="CenterAndExpand"
+                                    FontSize="Large"/>
+                    </Grid>
+                </SwipeView>
+            </DataTemplate>
+
+            <DataTemplate x:Key="primaryTemplate">
+                <SwipeView>
+                    <SwipeView.RightItems>
+                        <SwipeItems Mode="Execute">
+                            <SwipeItem Text="{ext:Translate DeleteText}" 
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=DeleteTenantCommand}"
+                                           CommandParameter="{Binding .}">
+                                <SwipeItem.IconImageSource>
+                                    <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.DeleteBinFill}" />
+                                </SwipeItem.IconImageSource>
+                            </SwipeItem>
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+
+                    <SwipeView.LeftItems>
+                        <SwipeItem 
+                                    BackgroundColor="{StaticResource Primary}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetActiveTenantCommand}"
+                                    CommandParameter="{Binding .}">
+                            <SwipeItem.IconImageSource>
+                                <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.LeafFill}" />
+                            </SwipeItem.IconImageSource>
+                        </SwipeItem>
+                    </SwipeView.LeftItems>
+
+                    <Grid Padding="5,10" x:DataType="models:ApiSetup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding Name}"
+                                    Grid.Row="0" 
+                                    LineBreakMode="NoWrap" 
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Start"/>
+
+                        <Label 
+                                    Grid.Row="1"
+                                    Text="{Binding Endpoint}" 
+                                    LineBreakMode="NoWrap" />
+
+                        <Label 
+                                    Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    FontFamily="{StaticResource RemixiconFont}"
+                                    Text="{x:Static fonts:RemixiconFont.StarFill}"
+                                    TextColor="{StaticResource StarColor}"
+                                    VerticalOptions="CenterAndExpand"
+                                    FontSize="Large"/>
+                    </Grid>
+                </SwipeView>
+            </DataTemplate>
+
+            <DataTemplate x:Key="activePrimaryTemplate">
+                <SwipeView>
+                    <SwipeView.RightItems>
+                        <SwipeItems Mode="Execute">
+                            <SwipeItem Text="{ext:Translate DeleteText}" 
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=DeleteTenantCommand}"
+                                           CommandParameter="{Binding .}">
+                                <SwipeItem.IconImageSource>
+                                    <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.DeleteBinFill}" />
+                                </SwipeItem.IconImageSource>
+                            </SwipeItem>
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+
+                    <Grid Padding="5,10" x:DataType="models:ApiSetup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding Name}"
+                                    Grid.Row="0" 
+                                    LineBreakMode="NoWrap" 
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Start"/>
+
+                        <Label 
+                                    Grid.Row="1"
+                                    Text="{Binding Endpoint}" 
+                                    LineBreakMode="NoWrap" />
+
+                        <Label 
+                                    Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    FontFamily="{StaticResource RemixiconFont}"
+                                    Text="{x:Static fonts:RemixiconFont.StarFill}"
+                                    TextColor="{StaticResource StarColor}"
+                                    VerticalOptions="CenterAndExpand"
+                                    FontSize="Large"/>
+
+                        <Label 
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    FontFamily="{StaticResource RemixiconFont}"
+                                    Text="{x:Static fonts:RemixiconFont.LeafFill}"
+                                    TextColor="{StaticResource Primary}"
+                                    VerticalOptions="CenterAndExpand"
+                                    FontSize="Large"/>
+                    </Grid>
+                </SwipeView>
+            </DataTemplate>
+
+            <ts:TenantListDisplaySelector
+                x:Key="tenantTemplateSelector"
+                DefaultTemplate="{StaticResource defaultTemplate}"
+                PrimaryTemplate="{StaticResource primaryTemplate}"
+                ActiveTemplate="{StaticResource activeTemplate}"
+                ActivePrimaryTemplate="{StaticResource activePrimaryTemplate}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem 
             Command="{Binding AddCommand}"
@@ -30,48 +277,9 @@
 
             <CollectionView
                 ItemsSource="{Binding Items}"
-                SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="{ext:Translate DeleteText}" 
-                                           BackgroundColor="Red"
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=DeleteTenantCommand}"
-                                           CommandParameter="{Binding .}">
-                                        <SwipeItem.IconImageSource>
-                                            <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.DeleteBinFill}" />
-                                        </SwipeItem.IconImageSource>
-                                    </SwipeItem>
-                                </SwipeItems>
-                            </SwipeView.RightItems>
+                SelectionMode="None"
+                ItemTemplate="{StaticResource tenantTemplateSelector}" />
 
-                            <SwipeView.LeftItems>
-                                <SwipeItem 
-                                    BackgroundColor="#FFA500"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetDefaultTenantCommand}"
-                                    CommandParameter="{Binding .}">
-                                    <SwipeItem.IconImageSource>
-                                        <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.StarFill}" />
-                                    </SwipeItem.IconImageSource>
-                                </SwipeItem>
-                            </SwipeView.LeftItems>
-
-                            <StackLayout Padding="5,10" x:DataType="models:ApiSetup">
-                                <Label Text="{Binding Name}"
-                                    LineBreakMode="NoWrap" 
-                                    FontAttributes="Bold"
-                                    HorizontalOptions="Start"/>
-
-                                <Label Text="{Binding Endpoint}" 
-                                   LineBreakMode="NoWrap" />
-                            </StackLayout>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            
         </RefreshView>
     </ContentPage.Content>
 </views:TopLevelContentPage>
