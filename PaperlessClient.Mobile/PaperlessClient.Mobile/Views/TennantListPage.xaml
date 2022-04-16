@@ -8,13 +8,19 @@
     xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
     xmlns:models="clr-namespace:PaperlessClient.Mobile.Models"
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
+    xmlns:fonts="clr-namespace:PaperlessClient.Mobile.Resources.Fonts"
     x:Class="PaperlessClient.Mobile.Views.TennantListPage"
     Title="{ext:Translate TennantsText}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem 
             Command="{Binding AddCommand}"
-            Text="{ext:Translate AddText}"/>
+            Text="{ext:Translate AddText}">
+
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.AddFill}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -33,22 +39,30 @@
                                     <SwipeItem Text="{ext:Translate DeleteText}" 
                                            BackgroundColor="Red"
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=DeleteTenantCommand}"
-                                           CommandParameter="{Binding .}"/>
+                                           CommandParameter="{Binding .}">
+                                        <SwipeItem.IconImageSource>
+                                            <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.DeleteBinFill}" />
+                                        </SwipeItem.IconImageSource>
+                                    </SwipeItem>
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
                             <SwipeView.LeftItems>
                                 <SwipeItem 
-                                Text="{ext:Translate SetDefaultText}"
-                                BackgroundColor="#FFA500"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetDefaultTenantCommand}"
-                                CommandParameter="{Binding .}"/>
+                                    BackgroundColor="#FFA500"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetDefaultTenantCommand}"
+                                    CommandParameter="{Binding .}">
+                                    <SwipeItem.IconImageSource>
+                                        <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.StarFill}" />
+                                    </SwipeItem.IconImageSource>
+                                </SwipeItem>
                             </SwipeView.LeftItems>
 
                             <StackLayout Padding="5,10" x:DataType="models:ApiSetup">
                                 <Label Text="{Binding Name}"
-                                   LineBreakMode="NoWrap" 
-                                   FontAttributes="Bold"/>
+                                    LineBreakMode="NoWrap" 
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Start"/>
 
                                 <Label Text="{Binding Endpoint}" 
                                    LineBreakMode="NoWrap" />

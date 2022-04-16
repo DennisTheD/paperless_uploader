@@ -67,6 +67,11 @@ namespace PaperlessClient.Mobile.Services
                 };
                 await persistenceService.PersistSecureAsync($"{TENNANT_SETUP_PREFIX}{endpoint}", apiSetup); // persist the setup
 
+                // notify other components about the new tenant
+                MessagingCenter.Send(
+                    new TenantListChangedEvent() { NewTenant = apiSetup }
+                    , nameof(TenantListChangedEvent));
+
                 if (activeTennant == null || setAsDefault) {
                     defaultTennantKey = $"{TENNANT_SETUP_PREFIX}{endpoint}";
                     await persistenceService.PersistSecureAsync(DEFAULT_TENNANT_KEY, $"{TENNANT_SETUP_PREFIX}{endpoint}");
@@ -94,6 +99,10 @@ namespace PaperlessClient.Mobile.Services
 
         public void ChangeTenant(ApiSetup tenant) {
             activeTennant = tenant;
+            // notify other components about the change
+            MessagingCenter.Send(
+                new TenantChangedEvent(activeTennant)
+                , nameof(TenantChangedEvent));
         }
 
         public Task<List<ApiSetup>> GetTennants()
@@ -110,7 +119,7 @@ namespace PaperlessClient.Mobile.Services
             // delete the configuration
             await persistenceService.DeleteSecureAsync(targetTenantKey);
 
-            // notify other components abaout the deleted change
+            // notify other components about the deleted tenant
             MessagingCenter.Send(
                 new TenantListChangedEvent() { DeletedTenant = tenant }
                 , nameof(TenantListChangedEvent));
@@ -129,26 +138,22 @@ namespace PaperlessClient.Mobile.Services
                     return;
                 }
                 
-                if (requireTenantChange) { 
-                    activeTennant = availableTenants[0];
-                    // notify other components abaout the tenant change
-                    MessagingCenter.Send(
-                        new TenantChangedEvent(activeTennant)
-                        , nameof(TenantChangedEvent));
+                if (requireTenantChange) {
+                    ChangeTenant(availableTenants[0]);                    
                 } 
                 
                 if (requireNewDefaultTenant) {
-                    defaultTennantKey = $"{TENNANT_SETUP_PREFIX}{activeTennant.Endpoint}";
-                    await persistenceService.PersistSecureAsync(
-                        DEFAULT_TENNANT_KEY
-                        , defaultTennantKey);
+                    await SetDefaultTenant(activeTennant);
                 }
             }
         }
 
-        public Task SetDefaultTenant(ApiSetup tenant)
+        public async Task SetDefaultTenant(ApiSetup tenant)
         {
-            return Task.CompletedTask;
+            defaultTennantKey = $"{TENNANT_SETUP_PREFIX}{activeTennant.Endpoint}";
+            await persistenceService.PersistSecureAsync(
+                DEFAULT_TENNANT_KEY
+                , defaultTennantKey);
         }
     }
 }

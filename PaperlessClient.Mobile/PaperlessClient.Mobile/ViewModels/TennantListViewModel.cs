@@ -107,6 +107,9 @@ namespace PaperlessClient.Mobile.ViewModels
 
         private void SetDefaultTenant(object obj)
         {
+            if (obj is ApiSetup tenant) { 
+                tenantService.SetDefaultTenant(tenant);
+            }
         }
 
         private static List<ApiSetup> TennantFilter(string arg1, List<ApiSetup> arg2)

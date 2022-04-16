@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.Models;
+﻿using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
@@ -27,14 +28,7 @@ namespace PaperlessClient.Mobile.ViewModels
                 return changeTenantCommand;
             }
         }
-
-        private async void ChangeTenant(object obj)
-        {
-            if (obj is ApiSetup tenant) { 
-                tenantService.ChangeTenant(tenant);
-            }
-            Tenants = await tenantService.GetTennants();
-        }
+        
 
         public AppShellViewModel(
             INotificationService notificationService
@@ -42,11 +36,27 @@ namespace PaperlessClient.Mobile.ViewModels
             : base(notificationService)
         {
             this.tenantService = tenantService;
-        }
+
+            MessagingCenter.Subscribe<TenantListChangedEvent>(this, nameof(TenantListChangedEvent), async(e) => { await RefreshTenantList(e); });
+            MessagingCenter.Subscribe<TenantChangedEvent>(this, nameof(TenantChangedEvent), async (e) => { await RefreshTenantList(e); });
+        }        
 
         public override async Task InitializeAsync(object parameter)
         {
+            await RefreshTenantList(parameter);
+        }
+
+        private async Task RefreshTenantList(object obj)
+        {
             Tenants = await tenantService.GetTennants();
+        }
+
+        private void ChangeTenant(object obj)
+        {
+            if (obj is ApiSetup tenant)
+            {
+                tenantService.ChangeTenant(tenant);
+            }
         }
     }
 }
