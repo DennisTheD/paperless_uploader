@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.Models;
+﻿using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.NavigationHints;
 using PaperlessClient.Mobile.Services;
 using PaperlessClient.Mobile.Services.Abstraction;
@@ -20,7 +21,7 @@ namespace PaperlessClient.Mobile
             InitializeComponent();
             ServiceLocator.Setup();
             MessagingCenter.Subscribe<FileUploadRequest>(this, nameof(FileUploadRequest), UploadRequestReceived);
-            MessagingCenter.Subscribe<LogoutRequest>(this, nameof(LogoutRequest), LogoutRequestReceived);
+            MessagingCenter.Subscribe<LoginRequiredEvent>(this, nameof(LoginRequiredEvent), LogoutRequestReceived);
 
             navigationService = ServiceLocator.Resolve<INavigationService>();
             tenantService = ServiceLocator.Resolve<ITenantService>();
@@ -33,7 +34,7 @@ namespace PaperlessClient.Mobile
 #pragma warning restore CS4014
         }
 
-        private async void LogoutRequestReceived(LogoutRequest obj)
+        private async void LogoutRequestReceived(LoginRequiredEvent loginRequiredEvent)
         {
             await InitializeAsync();
         }

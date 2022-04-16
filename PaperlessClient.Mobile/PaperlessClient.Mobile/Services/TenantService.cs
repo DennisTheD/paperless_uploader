@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaperlessClient.Mobile.Events;
 using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.Services.Abstraction;
 using System;
@@ -14,10 +15,12 @@ namespace PaperlessClient.Mobile.Services
     {
         private static readonly string LOGIN_ENDPOINT = "api/token/";
         private static readonly string TENNANT_SETUP_PREFIX = "tennantservice_";
-        private static readonly string DEFAULT_TENNANT_KEY = "tennantservice_default_tennant";
+        private static readonly string DEFAULT_TENNANT_KEY = "tennantservice_default_tennant";        
+
 
         private IPersistenceService persistenceService;
         private ApiSetup activeTennant;
+        private string defaultTennantKey = string.Empty;
 
         public TenantService(
             IPersistenceService persistenceService)
@@ -65,6 +68,7 @@ namespace PaperlessClient.Mobile.Services
                 await persistenceService.PersistSecureAsync($"{TENNANT_SETUP_PREFIX}{endpoint}", apiSetup); // persist the setup
 
                 if (activeTennant == null || setAsDefault) {
+                    defaultTennantKey = $"{TENNANT_SETUP_PREFIX}{endpoint}";
                     await persistenceService.PersistSecureAsync(DEFAULT_TENNANT_KEY, $"{TENNANT_SETUP_PREFIX}{endpoint}");
                     activeTennant = apiSetup;
                 }                    
@@ -76,7 +80,6 @@ namespace PaperlessClient.Mobile.Services
         }
 
         public async Task InitializeAsync() {
-            string defaultTennantKey = null;
             try
             {
                 defaultTennantKey = await persistenceService.GetSecureAsync<string>(DEFAULT_TENNANT_KEY);
@@ -95,6 +98,57 @@ namespace PaperlessClient.Mobile.Services
 
         public Task<List<ApiSetup>> GetTennants()
             => persistenceService.GetAllSecureAsync<ApiSetup>();
-        
+
+        public async Task DeleteTenant(ApiSetup tenant)
+        {
+            var targetTenantKey = $"{TENNANT_SETUP_PREFIX}{tenant.Endpoint}";
+
+            var requireTenantChange = 
+                tenant.Endpoint == activeTennant.Endpoint;
+            var requireNewDefaultTenant = targetTenantKey == defaultTennantKey;
+
+            // delete the configuration
+            await persistenceService.DeleteSecureAsync(targetTenantKey);
+
+            // notify other components abaout the deleted change
+            MessagingCenter.Send(
+                new TenantListChangedEvent() { DeletedTenant = tenant }
+                , nameof(TenantListChangedEvent));
+
+
+            if (requireTenantChange || requireNewDefaultTenant) {
+                var availableTenants = await GetTennants();
+                if (availableTenants == null || availableTenants.Count == 0) {
+                    // require a new login
+                    MessagingCenter.Send(
+                        new LoginRequiredEvent()
+                        , nameof(LoginRequiredEvent));
+                    activeTennant = null;
+                    defaultTennantKey = null;
+
+                    return;
+                }
+                
+                if (requireTenantChange) { 
+                    activeTennant = availableTenants[0];
+                    // notify other components abaout the tenant change
+                    MessagingCenter.Send(
+                        new TenantChangedEvent(activeTennant)
+                        , nameof(TenantChangedEvent));
+                } 
+                
+                if (requireNewDefaultTenant) {
+                    defaultTennantKey = $"{TENNANT_SETUP_PREFIX}{activeTennant.Endpoint}";
+                    await persistenceService.PersistSecureAsync(
+                        DEFAULT_TENNANT_KEY
+                        , defaultTennantKey);
+                }
+            }
+        }
+
+        public Task SetDefaultTenant(ApiSetup tenant)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

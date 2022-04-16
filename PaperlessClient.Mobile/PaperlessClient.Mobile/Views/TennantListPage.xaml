@@ -6,6 +6,7 @@
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
     xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
+    xmlns:models="clr-namespace:PaperlessClient.Mobile.Models"
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     x:Class="PaperlessClient.Mobile.Views.TennantListPage"
     Title="{ext:Translate TennantsText}">
@@ -15,24 +16,48 @@
             Command="{Binding AddCommand}"
             Text="{ext:Translate AddText}"/>
     </ContentPage.ToolbarItems>
-    
+
     <ContentPage.Content>
-        <ListView
-            IsPullToRefreshEnabled="False"
-            IsRefreshing="{Binding IsBusy}"
-            RefreshCommand="{Binding RefreshCommand}"
-            ItemsSource="{Binding Items}"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+        <RefreshView 
+            IsEnabled="False"
+            IsRefreshing="{Binding IsBusy}">
 
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior EventName="ItemSelected" Command="{Binding ItemSelectedCommand}"  />
-            </ListView.Behaviors>
+            <CollectionView
+                ItemsSource="{Binding Items}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="{ext:Translate DeleteText}" 
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=DeleteTenantCommand}"
+                                           CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding Endpoint}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                            <SwipeView.LeftItems>
+                                <SwipeItem 
+                                Text="{ext:Translate SetDefaultText}"
+                                BackgroundColor="#FFA500"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vms:TennantListViewModel}}, Path=SetDefaultTenantCommand}"
+                                CommandParameter="{Binding .}"/>
+                            </SwipeView.LeftItems>
+
+                            <StackLayout Padding="5,10" x:DataType="models:ApiSetup">
+                                <Label Text="{Binding Name}"
+                                   LineBreakMode="NoWrap" 
+                                   FontAttributes="Bold"/>
+
+                                <Label Text="{Binding Endpoint}" 
+                                   LineBreakMode="NoWrap" />
+                            </StackLayout>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </RefreshView>
     </ContentPage.Content>
 </views:TopLevelContentPage>

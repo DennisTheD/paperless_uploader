@@ -70,6 +70,24 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Are you sure you want to delete this Server? ähnelt.
+        /// </summary>
+        public static string DeleteTenantConfirmationText {
+            get {
+                return ResourceManager.GetString("DeleteTenantConfirmationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Delete ähnelt.
+        /// </summary>
+        public static string DeleteText {
+            get {
+                return ResourceManager.GetString("DeleteText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
         /// </summary>
         public static string ErrorText {
@@ -124,6 +142,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No ähnelt.
+        /// </summary>
+        public static string NoText {
+            get {
+                return ResourceManager.GetString("NoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Password ähnelt.
         /// </summary>
         public static string PasswordText {
@@ -147,6 +174,15 @@ namespace PaperlessClient.Mobile.Resources {
         public static string ServerText {
             get {
                 return ResourceManager.GetString("ServerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Set as default ähnelt.
+        /// </summary>
+        public static string SetDefaultText {
+            get {
+                return ResourceManager.GetString("SetDefaultText", resourceCulture);
             }
         }
         
@@ -219,6 +255,15 @@ namespace PaperlessClient.Mobile.Resources {
         public static string WelcomeText {
             get {
                 return ResourceManager.GetString("WelcomeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Yes ähnelt.
+        /// </summary>
+        public static string YesText {
+            get {
+                return ResourceManager.GetString("YesText", resourceCulture);
             }
         }
     }

@@ -120,6 +120,12 @@
   <data name="AddText" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="DeleteTenantConfirmationText" xml:space="preserve">
+    <value>Are you sure you want to delete this Server?</value>
+  </data>
+  <data name="DeleteText" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="ErrorText" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -138,6 +144,9 @@
   <data name="LogoutText" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="NoText" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="PasswordText" xml:space="preserve">
     <value>Password</value>
   </data>
@@ -146,6 +155,9 @@
   </data>
   <data name="ServerText" xml:space="preserve">
     <value>Server</value>
+  </data>
+  <data name="SetDefaultText" xml:space="preserve">
+    <value>Set as default</value>
   </data>
   <data name="ShareExplanationText" xml:space="preserve">
     <value>Use the share button on your device to send documents into this app</value>
@@ -170,5 +182,8 @@
   </data>
   <data name="WelcomeText" xml:space="preserve">
     <value>Welcome to Paperless</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

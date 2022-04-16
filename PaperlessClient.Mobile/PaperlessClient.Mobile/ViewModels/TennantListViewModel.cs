@@ -1,5 +1,6 @@
 ﻿using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.NavigationHints;
+using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
 using PaperlessClient.Mobile.Views;
 using System;
@@ -14,6 +15,34 @@ namespace PaperlessClient.Mobile.ViewModels
     public class TennantListViewModel : ListViewModelBase<ApiSetup>
     {
         private INavigationService navigationService;
+        private ITenantService tenantService;
+
+        #region Commands
+        private Command deleteTenantCommand;
+        public Command DeleteTenantCommand {
+            get {
+                if (deleteTenantCommand == null) {
+                    deleteTenantCommand = new Command(async (o) => { await DeleteTenant(o); });
+                }
+                return deleteTenantCommand;
+            }
+        }
+
+        private Command setDefaultTenantCommand;
+        public Command SetDefaultTenantCommand
+        {
+            get
+            {
+                if (setDefaultTenantCommand == null)
+                {
+                    setDefaultTenantCommand = new Command(SetDefaultTenant);
+                }
+                return setDefaultTenantCommand;
+            }
+        }
+        #endregion
+
+
         public TennantListViewModel(
             INavigationService navigationService
             , INotificationService notificationService
@@ -22,6 +51,7 @@ namespace PaperlessClient.Mobile.ViewModels
             : base(notificationService, tenantService.GetTennants, null, TennantFilter)
         {
             this.navigationService = navigationService;
+            this.tenantService = tenantService;
             AddCommand = new Command(AddTennant);
         }
         
@@ -55,6 +85,29 @@ namespace PaperlessClient.Mobile.ViewModels
                 });
         }
 
+        private async Task DeleteTenant(object obj)
+        {
+            if (!(obj is ApiSetup tenant)) {
+                return;
+            }
+
+            var confirmationResult = await notificationService.SelectActionIfInForeground(
+                this
+                , TextResources.DeleteTenantConfirmationText
+                , TextResources.NoText
+                , TextResources.YesText);
+
+            if (!string.IsNullOrWhiteSpace(confirmationResult)
+                && confirmationResult == TextResources.YesText) {
+
+                await tenantService.DeleteTenant(tenant);
+                await InitializeAsync(null);
+            }
+        }
+
+        private void SetDefaultTenant(object obj)
+        {
+        }
 
         private static List<ApiSetup> TennantFilter(string arg1, List<ApiSetup> arg2)
         {
