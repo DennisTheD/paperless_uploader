@@ -196,7 +196,7 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Tenenant name ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Tenant ähnelt.
         /// </summary>
         public static string TenantNameText {
             get {
@@ -205,7 +205,7 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Tennants ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Tenants ähnelt.
         /// </summary>
         public static string TennantsText {
             get {

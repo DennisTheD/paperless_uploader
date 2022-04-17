@@ -163,10 +163,10 @@
     <value>Use the share button on your device to send documents into this app</value>
   </data>
   <data name="TenantNameText" xml:space="preserve">
-    <value>Tenenant name</value>
+    <value>Tenant</value>
   </data>
   <data name="TennantsText" xml:space="preserve">
-    <value>Tennants</value>
+    <value>Tenants</value>
   </data>
   <data name="TitleText" xml:space="preserve">
     <value>Title</value>
