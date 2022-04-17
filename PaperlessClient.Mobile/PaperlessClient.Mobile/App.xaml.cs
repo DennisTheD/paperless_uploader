@@ -43,7 +43,8 @@ namespace PaperlessClient.Mobile
         {
             await navigationService.InitializationTask;
             fileUploadQueueService.AddTask(uploadRequest);
-            await navigationService.NavigateToAsync("//" + nameof(UploadFilePage));
+            await navigationService.NavigateToAsync("//" + nameof(UploadFilePage)
+                , new UploadFileNavigationHint() { DeleteFileAfterUpload = true, FileUri = uploadRequest.FileUri, Title = uploadRequest.FileTitle });
         }
 
         private async Task InitializeAsync() {

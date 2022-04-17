@@ -5,6 +5,7 @@
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
+    xmlns:fonts="clr-namespace:PaperlessClient.Mobile.Resources.Fonts"
     xmlns:ts="clr-namespace:PaperlessClient.Mobile.TemplateSelectors"
     xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
     x:Class="PaperlessClient.Mobile.AppShell"
@@ -72,12 +73,22 @@
 
     <FlyoutItem
         Title="Paperless">
-        
-        <ShellContent ContentTemplate="{DataTemplate views:LandingPage}" />
+
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.HomeFill}" />
+        </FlyoutItem.Icon>
+
+        <ShellContent 
+            ContentTemplate="{DataTemplate views:LandingPage}" 
+            Route="LandingPage"/>
     </FlyoutItem>
 
     <FlyoutItem
         Title="{ext:Translate TennantsText}">
+
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.ServerFill}" />
+        </FlyoutItem.Icon>
 
         <ShellContent ContentTemplate="{DataTemplate views:TennantListPage}" />
     </FlyoutItem>

@@ -1,7 +1,9 @@
-﻿using PaperlessClient.Mobile.Models;
+﻿using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.NavigationHints;
 using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
+using PaperlessClient.Mobile.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,13 +20,19 @@ namespace PaperlessClient.Mobile.ViewModels
 
         private IApiService apiService;
         private INavigationService navigationService;
-        private IFileUploadQueueService fileUploadQueueService;
 
         private string name;
         public string Name {
             get => name;
             set => SetProperty(ref name, value);
         }
+
+        private ApiSetup tenant;
+        public ApiSetup Tenant {
+            get => tenant;
+            set => SetProperty(ref tenant, value);
+        }
+
 
         private Command uploadCommand;
         public Command UploadCommand { 
@@ -40,13 +48,22 @@ namespace PaperlessClient.Mobile.ViewModels
             IApiService apiService
             , INavigationService navigationService
             , INotificationService notificationService
+            , ITenantService tenantService
             , IFileUploadQueueService fileUploadQueueService) 
             : base(notificationService)
         {
             this.apiService = apiService;
-            this.fileUploadQueueService = fileUploadQueueService;
             this.navigationService = navigationService;
 
+            // get the current tenant and register for changes to display the target tenant inside the form
+            Tenant = tenantService.GetCurrentTennant();
+            MessagingCenter.Subscribe<TenantChangedEvent>(
+                this
+                , nameof(TenantChangedEvent)
+                , (e) => { Tenant = e.NewTenant; });
+
+            // on first start, the InitializeAsync will not get called
+            // we need to fake the initilization with this hack
             if (fileUploadQueueService.GetTask(out FileUploadRequest uploadRequest))
             {
                 fileUri = uploadRequest.FileUri;
@@ -81,7 +98,7 @@ namespace PaperlessClient.Mobile.ViewModels
             {
                 await apiService.UploadInForeground(fileUri, Name);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.UploadFailedText);
                 return;
@@ -99,7 +116,9 @@ namespace PaperlessClient.Mobile.ViewModels
                 catch (Exception){}
             }
 
-            await navigationService.PopAsync();
+            await navigationService.NavigateToAndAndPopAsync(
+                $"//{nameof(LandingPage)}"
+                , null);
         }
     }
 }

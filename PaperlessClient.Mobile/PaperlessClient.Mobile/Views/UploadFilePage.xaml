@@ -11,19 +11,28 @@
     Padding="5,10,5,10">
 
     <ContentPage.Content>
-        <StackLayout
+        <RefreshView
+            IsEnabled="False"
+            IsRefreshing="{Binding IsBusy}">
+            
+            <StackLayout
             Padding="5,10,5,10"
             VerticalOptions="FillAndExpand">
-            <Label Text="{ext:Translate TitleText}" />
-            <Entry 
-                Text="{Binding Name}" />
 
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-            
-            <Button 
-                Command="{Binding UploadCommand}"
-                Text="{ext:Translate UploadText}" 
-                VerticalOptions="EndAndExpand" />
-        </StackLayout>
+                <Label Text="{ext:Translate TenantNameText}" />
+                <Entry 
+                    Text="{Binding Tenant.Name}"
+                    IsEnabled="False"/>
+
+                <Label Text="{ext:Translate TitleText}" />
+                <Entry 
+                    Text="{Binding Name}" />
+
+                <Button 
+                    Command="{Binding UploadCommand}"
+                    Text="{ext:Translate UploadText}" 
+                    VerticalOptions="EndAndExpand" />
+            </StackLayout>
+        </RefreshView>
     </ContentPage.Content>
 </views:CustomContentPage>
