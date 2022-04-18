@@ -26,6 +26,7 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<ApiService>().As<IApiService>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             builder.RegisterType<FileUploadQueueService>().As<IFileUploadQueueService>().SingleInstance();
+            builder.RegisterType<DocumentService>().As<IDocumentService>();
 
             //vms
             builder.RegisterType<AppShellViewModel>().AsSelf();
@@ -33,6 +34,7 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<UploadFileViewModel>().AsSelf();
             builder.RegisterType<LandingViewModel>().AsSelf();
             builder.RegisterType<TennantListViewModel>().AsSelf();
+            builder.RegisterType<DocumentListViewModel>().AsSelf();
 
             _container = builder.Build();
             setupComplete = true;

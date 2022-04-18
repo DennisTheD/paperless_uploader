@@ -5,9 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PaperlessClient.Mobile.Services
@@ -22,6 +25,48 @@ namespace PaperlessClient.Mobile.Services
             ITenantService tennantService)
         {
             this.tenantService = tennantService;
+        }
+
+        public async Task<T> Get<T>(string endpoint, Dictionary<string, string> parameters = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (parameters != null)
+            {
+                endpoint = string.Format("?{1}",
+                        string.Join("&",
+                            parameters.Select(kvp =>
+                                string.Format("{0}={1}", kvp.Key, kvp.Value))));
+            }
+
+            var tenant = tenantService.GetCurrentTennant();
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(tenant.Endpoint);
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Token", tenant.Token);
+
+            // ready to request
+            try
+            {
+                var result = await httpClient.GetAsync(endpoint, cancellationToken);
+                if (result.IsSuccessStatusCode)
+                {
+                    var json = await result.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(json);
+                }
+                else if (result.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException();
+                }
+                else
+                {
+                    throw new Exception("Request failed");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            throw new Exception("Invalid state");
         }
 
 

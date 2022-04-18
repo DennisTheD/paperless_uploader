@@ -81,6 +81,11 @@
         <ShellContent 
             ContentTemplate="{DataTemplate views:LandingPage}" 
             Route="LandingPage"/>
+
+        <ShellContent
+            ContentTemplate="{DataTemplate views:DocumentListPage}" 
+            Route="DocumentListPage"
+            Title="Documents"/>
     </FlyoutItem>
 
     <FlyoutItem

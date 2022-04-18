@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:TopLevelContentPage
+    x:TypeArguments="vms:DocumentListViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
+    xmlns:models="clr-namespace:PaperlessClient.Mobile.Models"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PaperlessClient.Mobile.Views.DocumentListPage">
+
+    <ContentPage.Content>
+        <RefreshView 
+            IsEnabled="False"
+            IsRefreshing="{Binding IsBusy}">
+
+            <CollectionView
+                ItemsSource="{Binding Items}">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Document">
+                        <Label Text="{Binding Title}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </RefreshView>
+    </ContentPage.Content>
+    
+</views:TopLevelContentPage>
