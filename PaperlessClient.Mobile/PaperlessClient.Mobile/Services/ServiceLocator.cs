@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PaperlessClient.Mobile.Services
 {
-    internal class ServiceLocator
+    public class ServiceLocator
     {
         private static bool setupComplete;
         private static IContainer _container;

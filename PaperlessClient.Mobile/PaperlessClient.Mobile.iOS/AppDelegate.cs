@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Net.Http;
+using FFImageLoading;
 using Foundation;
 using PaperlessClient.Mobile.Models;
+using PaperlessClient.Mobile.Services;
+using PaperlessClient.Mobile.Utils;
 using UIKit;
 using Xamarin.Forms;
 
@@ -26,6 +29,17 @@ namespace PaperlessClient.Mobile.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            // setup the service locator here because its allready needed for image authentication 
+            ServiceLocator.Setup();
+
+            // initializ image loader
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            // setup authentication
+            ImageService.Instance.Initialize(new FFImageLoading.Config.Configuration
+            {
+                HttpClient = new HttpClient(new AuthenticatedHttpClientHandler())
+            });
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

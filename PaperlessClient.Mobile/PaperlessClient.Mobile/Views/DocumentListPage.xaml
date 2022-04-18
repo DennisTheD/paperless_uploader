@@ -6,7 +6,15 @@
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
     xmlns:models="clr-namespace:PaperlessClient.Mobile.Models"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:converters="clr-namespace:PaperlessClient.Mobile.Converters"    
     x:Class="PaperlessClient.Mobile.Views.DocumentListPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IdToThumbUrlConverter x:Key="thumbUrlConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <RefreshView 
@@ -18,7 +26,27 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Document">
-                        <Label Text="{Binding Title}" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <ffimageloading:CachedImage 
+                                Grid.Column="0"
+                                HeightRequest="150"
+                                WidthRequest="100"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"                                
+                                Source="{Binding Id, Converter={StaticResource thumbUrlConverter}}" />
+                            
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding Title}"
+                                />
+                        </Grid>
+                        
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

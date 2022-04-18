@@ -19,7 +19,8 @@ namespace PaperlessClient.Mobile
         public App()
         {
             InitializeComponent();
-            ServiceLocator.Setup();
+            // setup allready completed inside the platform specivic projects
+            //ServiceLocator.Setup();
             MessagingCenter.Subscribe<FileUploadRequest>(this, nameof(FileUploadRequest), UploadRequestReceived);
             MessagingCenter.Subscribe<LoginRequiredEvent>(this, nameof(LoginRequiredEvent), LogoutRequestReceived);
 

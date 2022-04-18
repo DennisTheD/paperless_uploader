@@ -92,6 +92,13 @@ namespace PaperlessClient.Mobile.Services
             }
             catch (Exception){
             }
+
+            if (activeTennant != null) {
+                // notify other components about the change
+                MessagingCenter.Send(
+                    new TenantChangedEvent(activeTennant)
+                    , nameof(TenantChangedEvent));
+            }
         }
 
         public ApiSetup GetCurrentTennant()
