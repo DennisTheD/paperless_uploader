@@ -21,11 +21,14 @@
 
     <ContentPage.Content>
         <RefreshView 
-            IsEnabled="False"
-            IsRefreshing="{Binding IsBusy}">
+            IsEnabled="True"
+            IsRefreshing="{Binding IsBusy}"
+            Command="{Binding RefreshCommand}">
 
             <CollectionView
-                ItemsSource="{Binding Items}">
+                ItemsSource="{Binding Items}"
+                RemainingItemsThreshold="3"
+                RemainingItemsThresholdReachedCommand="{Binding LoadMoreDocumentsCommand}">
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Document">

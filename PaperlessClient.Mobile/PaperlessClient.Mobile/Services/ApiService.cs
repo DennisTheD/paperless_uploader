@@ -31,7 +31,8 @@ namespace PaperlessClient.Mobile.Services
         {
             if (parameters != null)
             {
-                endpoint = string.Format("?{1}",
+                endpoint = string.Format("{0}?{1}",
+                        endpoint,
                         string.Join("&",
                             parameters.Select(kvp =>
                                 string.Format("{0}={1}", kvp.Key, kvp.Value))));

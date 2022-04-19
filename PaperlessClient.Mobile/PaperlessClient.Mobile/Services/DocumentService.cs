@@ -17,6 +17,8 @@ namespace PaperlessClient.Mobile.Services
         private int currentPage = 0;
         private bool moreResultsAvailable = false;
 
+        public bool MoreResultsAvailable => moreResultsAvailable;
+
         public DocumentService(
             IApiService apiService
             , IPersistenceService persistenceService)
@@ -26,11 +28,14 @@ namespace PaperlessClient.Mobile.Services
         }
 
         public IObservable<List<Document>> GetAndFetchDocuments()
-            => persistenceService.GetAndFetchObjectAsync(DOCUMENT_ENDPOINT, GetDocuments);
+            => persistenceService.GetAndFetchObjectAsync(DOCUMENT_ENDPOINT, () => GetDocuments(1));
 
-        public async Task<List<Document>> GetDocuments()
+        public async Task<List<Document>> GetDocuments(int page)
         {
-            var documentResponse = await apiService.Get<ApiListResponse<Document>>(DOCUMENT_ENDPOINT);
+            var documentResponse = await apiService.Get<ApiListResponse<Document>>(
+                DOCUMENT_ENDPOINT
+                , new Dictionary<string, string>() { {"page", page.ToString() } });
+
             currentPage = 1;
             moreResultsAvailable = !string.IsNullOrWhiteSpace(documentResponse?.Next);
             return documentResponse.Results;
