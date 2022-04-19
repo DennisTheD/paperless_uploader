@@ -126,6 +126,9 @@
   <data name="DeleteText" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="DocumentsText" xml:space="preserve">
+    <value>Dokumente</value>
+  </data>
   <data name="ErrorText" xml:space="preserve">
     <value>Fehler</value>
   </data>

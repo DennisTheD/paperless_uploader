@@ -88,6 +88,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Documents ähnelt.
+        /// </summary>
+        public static string DocumentsText {
+            get {
+                return ResourceManager.GetString("DocumentsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
         /// </summary>
         public static string ErrorText {
