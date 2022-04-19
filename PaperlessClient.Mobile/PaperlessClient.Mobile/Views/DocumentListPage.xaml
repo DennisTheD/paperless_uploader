@@ -8,6 +8,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:converters="clr-namespace:PaperlessClient.Mobile.Converters"    
+    xmlns:fonts="clr-namespace:PaperlessClient.Mobile.Resources.Fonts"
     x:Class="PaperlessClient.Mobile.Views.DocumentListPage">
 
     <ContentPage.Resources>
@@ -26,25 +27,82 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Document">
-
-                        <Grid>
+                        
+                        <Grid
+                            Padding="5,0"
+                            Margin="0,5,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
 
                             <ffimageloading:CachedImage 
                                 Grid.Column="0"
-                                HeightRequest="150"
                                 WidthRequest="100"
                                 HorizontalOptions="Center"
-                                VerticalOptions="Center"                                
+                                VerticalOptions="Center"
+                                DownsampleToViewSize="True"
                                 Source="{Binding Id, Converter={StaticResource thumbUrlConverter}}" />
-                            
-                            <Label
-                                Grid.Column="1"
-                                Text="{Binding Title}"
-                                />
+
+                            <StackLayout Grid.Column="1">
+                                <Label
+                                    Style="{StaticResource descriptionLabel}"
+                                    Text="Rechnung" />
+
+                                <Label 
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="FillAndExpand"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding Title}"
+                                    Margin="0,10"/>
+
+                                <Label
+                                    Style="{StaticResource descriptionLabel}"
+                                    VerticalTextAlignment="Center">
+
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{x:Static fonts:RemixiconFont.CalendarFill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding Created, StringFormat='{0:dd.MM.yyyy}'}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label
+                                    Style="{StaticResource descriptionLabel}">
+
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{x:Static fonts:RemixiconFont.PriceTag3Fill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
+                                            <Span Text=" " />
+                                            <Span Text="TODO; Wohnung; Gesundheit" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label
+                                    Style="{StaticResource descriptionLabel}">
+
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{x:Static fonts:RemixiconFont.UserReceivedFill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
+                                            <Span Text=" " />
+                                            <Span Text="Amazon" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                HeightRequest="1"
+                                Color="#ddd"/>
                         </Grid>
                         
                     </DataTemplate>

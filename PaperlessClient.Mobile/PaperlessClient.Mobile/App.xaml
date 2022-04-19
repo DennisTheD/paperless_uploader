@@ -29,6 +29,11 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
+
+            <Style x:Key="descriptionLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="Caption"></Setter>
+                <Setter Property="TextColor" Value="#555"></Setter>
+            </Style>
         </ResourceDictionary>        
     </Application.Resources>
 </Application>
