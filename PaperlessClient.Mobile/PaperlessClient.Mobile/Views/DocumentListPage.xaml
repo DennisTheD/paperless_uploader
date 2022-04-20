@@ -16,6 +16,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IdToThumbUrlConverter x:Key="thumbUrlConverter" />
+            <converters:IdToDocumentTypeNameConverter x:Key="docTypeConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -65,7 +66,7 @@
                             <StackLayout Grid.Column="1">
                                 <Label
                                     Style="{StaticResource descriptionLabel}"
-                                    Text="Rechnung"
+                                    Text="{Binding DocumentType, Converter={StaticResource docTypeConverter}}"
                                     FontSize="14"/>
 
                                 <Frame
@@ -79,7 +80,7 @@
                                         FontAttributes="Bold"
                                         HorizontalOptions="Start"
                                         LineBreakMode="TailTruncation"
-                                        Text="Kündigung Internet" />
+                                        Text="{Binding Title}" />
                                     
                                 </Frame>
 

@@ -15,7 +15,7 @@ namespace PaperlessClient.Mobile.Services
         private IPersistenceService persistenceService;
 
         private int currentPage = 0;
-        private bool moreResultsAvailable = false;
+        private bool moreResultsAvailable = true;
 
         public bool MoreResultsAvailable => moreResultsAvailable;
 
