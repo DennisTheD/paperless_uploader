@@ -17,6 +17,8 @@
         <ResourceDictionary>
             <converters:IdToThumbUrlConverter x:Key="thumbUrlConverter" />
             <converters:IdToDocumentTypeNameConverter x:Key="docTypeConverter" />
+            <converters:IdsToTagNameListConverter x:Key="tagNameListConverter" />
+            <converters:ListNotEmptyConverter x:Key="listNotEmptyConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -98,13 +100,14 @@
                                 </Label>
 
                                 <Label
+                                    IsVisible="{Binding Tags, Converter={StaticResource listNotEmptyConverter}}"
                                     Style="{StaticResource descriptionLabel}">
 
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{x:Static fonts:RemixiconFont.PriceTag3Fill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
                                             <Span Text=" " />
-                                            <Span Text="TODO; Wohnung; Gesundheit" />
+                                            <Span Text="{Binding Tags, Converter={StaticResource tagNameListConverter}}" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
