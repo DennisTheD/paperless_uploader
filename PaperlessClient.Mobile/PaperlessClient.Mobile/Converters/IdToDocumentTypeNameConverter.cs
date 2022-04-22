@@ -10,32 +10,12 @@ using Xamarin.Forms;
 
 namespace PaperlessClient.Mobile.Converters
 {
-    public class IdToDocumentTypeNameConverter : IValueConverter
+    public class IdToDocumentTypeNameConverter : TenantAwareBaseConverter<DocumentType>
     {
         public IdToDocumentTypeNameConverter()
         {
             var docTypeService = ServiceLocator.Resolve<IDocumentTypeService>();
-            docTypeService.GetAndFetchAllDocumentTypes()
-                .Subscribe((d) => { DocumentTypes = d; });
-        }
-
-        public List<DocumentType> DocumentTypes { get; set; }
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is int id) {
-                var docType = DocumentTypes?.Where(d => d.Id == id).FirstOrDefault();
-                if (docType != null) { 
-                    return docType.Name;
-                }
-            }
-
-            return "";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
+            UpdateFetchFunc(docTypeService.GetAndFetchAllDocumentTypes);
         }
     }
 }

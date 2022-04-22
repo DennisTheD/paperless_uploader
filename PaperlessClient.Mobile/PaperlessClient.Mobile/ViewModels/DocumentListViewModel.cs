@@ -1,5 +1,7 @@
-﻿using PaperlessClient.Mobile.Models;
+﻿using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.Services.Abstraction;
+using PaperlessClient.Mobile.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -61,7 +63,9 @@ namespace PaperlessClient.Mobile.ViewModels
         {
             this.documentService = documentService;
             MoreDocumentsAvailable = true;
-        }
+
+            MessagingCenter.Subscribe<TenantChangedEvent>(this, nameof(TenantChangedEvent), (e) => OnTenantChanged());
+        }        
 
         private static List<Document> FilterDocuments(string arg1, List<Document> arg2)
         {
@@ -90,6 +94,12 @@ namespace PaperlessClient.Mobile.ViewModels
             else {
                 MoreDocumentsAvailable = false;
             }
+        }
+
+        private void OnTenantChanged()
+        {
+            var currentPage = Page as DocumentListPage;
+            
         }
     }
 }

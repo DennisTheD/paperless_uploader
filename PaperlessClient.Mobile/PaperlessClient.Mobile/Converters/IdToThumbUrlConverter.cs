@@ -9,30 +9,24 @@ using Xamarin.Forms;
 
 namespace PaperlessClient.Mobile.Converters
 {
-    public class IdToThumbUrlConverter : IValueConverter
+    public class IdToThumbUrlConverter : TenantAwareBaseConverter<Document>
     {
-        private static readonly string THUMBNAIL_ENDPOINT = "api/documents/{id}/thumb/";
-        private ITenantService tenantService;
-        private ApiSetup apiSetup;
+        private static readonly string THUMBNAIL_ENDPOINT = "api/documents/{id}/thumb/";       
 
         public IdToThumbUrlConverter()
         {
-            this.tenantService = ServiceLocator.Resolve<ITenantService>();
-            this.apiSetup = tenantService.GetCurrentTennant();
         }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is int id) {
                 var endpoint = THUMBNAIL_ENDPOINT.Replace("{id}", id.ToString());
-                return apiSetup.Endpoint + endpoint;
+                return Tenant.Endpoint + endpoint;
             }
             return null;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        protected override void UpdateItems()
+        {} // do nothing
     }
 }

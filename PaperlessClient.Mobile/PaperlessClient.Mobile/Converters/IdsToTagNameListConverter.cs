@@ -10,23 +10,18 @@ using Xamarin.Forms;
 
 namespace PaperlessClient.Mobile.Converters
 {
-    public class IdsToTagNameListConverter : IValueConverter
+    public class IdsToTagNameListConverter : TenantAwareBaseConverter<Tag>
     {
-        private readonly ITagService tagService;
-
-        public List<Tag> Tags { get; set; }
-
         public IdsToTagNameListConverter()
         {
-            tagService = ServiceLocator.Resolve<ITagService>();
-            tagService.GetAndFetchAllTags()
-                .Subscribe(tags => Tags = tags);
+            var tagService = ServiceLocator.Resolve<ITagService>();
+            UpdateFetchFunc(tagService.GetAndFetchAllTags);
         }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is List<int> ids) {
-                var tagNames = Tags?
+                var tagNames = Items?
                     .OrderBy(t => t.Name)
                     .Where(t => ids.Contains(t.Id))
                     .Select(t => t.Name);
@@ -37,12 +32,7 @@ namespace PaperlessClient.Mobile.Converters
                 return "";
             }
 
-            return "INVALID";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
+            return "INVALID INPUT";
         }
     }
 }

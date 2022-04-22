@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.ViewModels;
+﻿using PaperlessClient.Mobile.Converters;
+using PaperlessClient.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
