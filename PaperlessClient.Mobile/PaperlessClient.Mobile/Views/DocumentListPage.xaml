@@ -19,6 +19,8 @@
             <converters:IdToDocumentTypeNameConverter x:Key="docTypeConverter" />
             <converters:IdsToTagNameListConverter x:Key="tagNameListConverter" />
             <converters:ListNotEmptyConverter x:Key="listNotEmptyConverter" />
+            <converters:IdToCorrespondentNameConverter x:Key="correspondentConverter" />
+            <converters:IsNotNullOrEmptyConverter x:Key="notNullConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -113,13 +115,14 @@
                                 </Label>
 
                                 <Label
+                                    IsVisible="{Binding Correspondent, Converter={StaticResource notNullConverter}}"
                                     Style="{StaticResource descriptionLabel}">
 
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{x:Static fonts:RemixiconFont.UserReceivedFill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
                                             <Span Text=" " />
-                                            <Span Text="Amazon" />
+                                            <Span Text="{Binding Correspondent, Converter={StaticResource correspondentConverter}}" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>

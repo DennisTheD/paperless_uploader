@@ -29,6 +29,7 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<DocumentService>().As<IDocumentService>();
             builder.RegisterType<DocumentTypeService>().As<IDocumentTypeService>();
             builder.RegisterType<TagService>().As<ITagService>();
+            builder.RegisterType<CorrespondentService>().As<ICorrespondentService>();
 
             //vms
             builder.RegisterType<AppShellViewModel>().AsSelf();
