@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace PaperlessClient.Mobile.Converters
@@ -21,12 +22,12 @@ namespace PaperlessClient.Mobile.Converters
         {
             if (value is int id) {
                 var endpoint = THUMBNAIL_ENDPOINT.Replace("{id}", id.ToString());
-                return Tenant.Endpoint + endpoint;
+                return tenantService.GetCurrentTennant().Endpoint + endpoint;
             }
             return null;
         }
 
-        protected override void UpdateItems()
-        {} // do nothing
+        public override Task UpdateDataSource()
+            => Task.CompletedTask;
     }
 }

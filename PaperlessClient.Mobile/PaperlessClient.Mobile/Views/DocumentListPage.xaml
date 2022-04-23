@@ -11,15 +11,16 @@
     xmlns:fonts="clr-namespace:PaperlessClient.Mobile.Resources.Fonts"
     xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
     x:Class="PaperlessClient.Mobile.Views.DocumentListPage"
-    Title="{ext:Translate DocumentsText}">
+    Title="{ext:Translate DocumentsText}"
+    x:Name="page">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IdToThumbUrlConverter x:Key="thumbUrlConverter" />
-            <converters:IdToDocumentTypeNameConverter x:Key="docTypeConverter" />
-            <converters:IdsToTagNameListConverter x:Key="tagNameListConverter" />
-            <converters:ListNotEmptyConverter x:Key="listNotEmptyConverter" />
-            <converters:IdToCorrespondentNameConverter x:Key="correspondentConverter" />
+            <converters:IdToDocumentTypeNameConverter x:Key="docTypeConverter" ViewModel="{Binding Source={x:Reference page}, Path=BindingContext}" />
+            <converters:IdsToTagNameListConverter x:Key="tagNameListConverter" ViewModel="{Binding Source={x:Reference page}, Path=BindingContext}" />
+            <converters:ListNotEmptyConverter x:Key="listNotEmptyConverter"  />
+            <converters:IdToCorrespondentNameConverter x:Key="correspondentConverter" ViewModel="{Binding Source={x:Reference page}, Path=BindingContext}" />
             <converters:IsNotNullOrEmptyConverter x:Key="notNullConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>

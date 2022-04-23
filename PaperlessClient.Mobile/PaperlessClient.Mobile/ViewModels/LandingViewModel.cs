@@ -21,8 +21,9 @@ namespace PaperlessClient.Mobile.ViewModels
         }        
 
         public LandingViewModel(
-            INotificationService notificationService) 
-            : base(notificationService)
+            INotificationService notificationService
+            , ITenantService tenantService) 
+            : base(notificationService, tenantService)
         {
         }
 

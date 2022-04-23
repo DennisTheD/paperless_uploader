@@ -12,6 +12,7 @@ namespace PaperlessClient.Mobile.ViewModels
 {
     public abstract class ListViewModelBase<TListEntity> : ViewModelBase
     {
+        #region props
         protected Func<Task<List<TListEntity>>> fetchFunc;
         protected Func<IObservable<List<TListEntity>>> getAndFetchFunc;
 
@@ -52,6 +53,7 @@ namespace PaperlessClient.Mobile.ViewModels
             get { return selectedItem; }
             set { selectedItem = value; OnPropertyChanged(); }
         }
+        #endregion
 
         #region commands
         private Command itemSelectedCommand;
@@ -72,8 +74,9 @@ namespace PaperlessClient.Mobile.ViewModels
         #region constructors
         private ListViewModelBase(
             INotificationService notificationService,
+            ITenantService tenantService,
             Func<string, List<TListEntity>, List<TListEntity>> filterFunc = null)
-            : base(notificationService)
+            : base(notificationService, tenantService)
         {
             this.filterFunc = filterFunc;
             customChangeNotificationRegistrations = new List<string>();
@@ -81,10 +84,11 @@ namespace PaperlessClient.Mobile.ViewModels
 
         protected ListViewModelBase(
             INotificationService notificationService
+            , ITenantService tenantService
             , Func<Task<List<TListEntity>>> fetchFunc
             , Func<IObservable<List<TListEntity>>> getAndFetchFunc
             , Func<string, List<TListEntity>, List<TListEntity>> filterFunc = null)
-            : this(notificationService, filterFunc)
+            : this(notificationService, tenantService, filterFunc)
         {
             UpdateFetchFuncs(fetchFunc, getAndFetchFunc);
         }
@@ -100,31 +104,23 @@ namespace PaperlessClient.Mobile.ViewModels
             return base.OnReappearing(parameter);
         }
 
-        public override async Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(object parameter)
         {
-            if (filteringEnabled)
+            if (requiredConverters.Count == 0)
             {
-                if (string.IsNullOrWhiteSpace(filter1))
-                    throw new Exception("For filtering enabled list pages, filed filer1 shoud be set in InitaliceAsync.");
+                RefreshCommand.Execute(false);
+            }
+            else {
+                // indicate a busy state while we are waiting for the converters to get ready
+                IsBusy = true;
+            }
+            return Task.CompletedTask;
+        }
 
-                await Refresh<List<TListEntity>>(
-                    async () => { return await filteredFetchFunc(filter1); }
-                    , () => { return filteredGetAndFetchFunc(filter1); }
-                    , (items) => {
-                        Items = new ObservableCollection<TListEntity>(items);
-                        customChangeNotificationRegistrations.ForEach(p => OnPropertyChanged(p));
-                    });
-            }
-            else
-            {
-                await Refresh(
-                fetchFunc
-                , getAndFetchFunc
-                , (items) => {
-                    Items = new ObservableCollection<TListEntity>(items);
-                    customChangeNotificationRegistrations.ForEach(p => OnPropertyChanged(p));
-                });
-            }
+        // gets called after any tenant change and when all converters are reday
+        protected override void OnConvertersReady()
+        {
+            RefreshCommand.Execute(false);
         }
 
         protected void UpdateFetchFuncs(
@@ -135,15 +131,17 @@ namespace PaperlessClient.Mobile.ViewModels
             this.fetchFunc = fetchFunc;
             this.getAndFetchFunc = getAndFetchFunc;
 
-            RefreshCommand = new Command(async () => {
+            RefreshCommand = new Command(async (commandParam) => {
+                var forceReload = commandParam as bool? ?? true;
+
                 await Refresh(
-                fetchFunc
-                , getAndFetchFunc
-                , (items) => {
-                    Items = new ObservableCollection<TListEntity>(items);
-                    customChangeNotificationRegistrations.ForEach(p => OnPropertyChanged(p));
-                }
-                , true);
+                    fetchFunc
+                    , getAndFetchFunc
+                    , (items) => {
+                        Items = new ObservableCollection<TListEntity>(items);
+                        customChangeNotificationRegistrations.ForEach(p => OnPropertyChanged(p));
+                    }
+                    , forceReload);
             });
         }
 

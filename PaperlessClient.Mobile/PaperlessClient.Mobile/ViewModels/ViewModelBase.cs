@@ -1,6 +1,11 @@
-﻿using PaperlessClient.Mobile.Services.Abstraction;
+﻿using PaperlessClient.Mobile.Converters;
+using PaperlessClient.Mobile.Converters.Interfaces;
+using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Models;
+using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +15,17 @@ namespace PaperlessClient.Mobile.ViewModels
 {
     public abstract class ViewModelBase : BindableObject
     {
+        #region services
         protected INotificationService notificationService;
+        protected ITenantService tenantService;
+        #endregion
+
+        #region props
         public Page Page { get; set; }
+
+        protected List<Type> requiredConverters;
+        protected List<ITenantAwareConverter> TenantAwareConverters { get; private set; }
+
 
         protected string title;
         public string Title
@@ -44,19 +58,30 @@ namespace PaperlessClient.Mobile.ViewModels
                     OnPropertyChanged();
             }
         }
+        #endregion
 
+        #region commands
         private Command refreshCommand;
         public Command RefreshCommand
         {
             get { return refreshCommand; }
             set { refreshCommand = value; OnPropertyChanged(); }
         }
+        #endregion
 
-        public ViewModelBase(INotificationService notificationService)
+        public ViewModelBase(
+            INotificationService notificationService
+            , ITenantService tenantService)
         {
             this.notificationService = notificationService;
-        }
+            this.tenantService = tenantService;
 
+            requiredConverters = new List<Type>();
+            TenantAwareConverters = new List<ITenantAwareConverter>();
+            MessagingCenter.Subscribe<TenantChangedEvent>(this, nameof(TenantChangedEvent), async(e) => await HandleTenantChanged(e));
+        }        
+
+        #region lifecycle methods
         public abstract Task InitializeAsync(object parameter);
 
         public virtual Task OnReappearing(object parameter)
@@ -68,6 +93,44 @@ namespace PaperlessClient.Mobile.ViewModels
         {
             return Task.CompletedTask;
         }
+        #endregion
+
+        #region tenant awareness
+        public void RequireConverter(params Type[] converterTypes) { 
+            requiredConverters.AddRange(converterTypes);
+        }
+
+        public async Task RegisterTenantAwareConverter(ITenantAwareConverter converter)
+        {
+            TenantAwareConverters.Add(converter);
+
+
+            if (requiredConverters.Count > 0) {
+                var allConvertersReady = true;
+                foreach (var converterType in requiredConverters) {
+                    allConvertersReady = allConvertersReady && TenantAwareConverters.Any(c => c.GetType() == converterType);
+                }
+
+                if (allConvertersReady) { 
+                    await Task.WhenAll(TenantAwareConverters.Select(c => c.UpdateDataSource()));
+                    OnConvertersReady();
+                }
+            }
+        }
+
+        private async Task HandleTenantChanged(TenantChangedEvent eventArgs)
+        {
+            OnTenantChanged(eventArgs);
+            await Task.WhenAll(TenantAwareConverters.Select(c => c.UpdateDataSource()));
+            OnConvertersReady();
+        }
+
+        protected virtual void OnTenantChanged(TenantChangedEvent eventArgs) {
+        }
+
+        protected virtual void OnConvertersReady() {
+        }
+        #endregion
 
         protected async Task Refresh<T>(
             Func<Task<T>> fetchFunc
@@ -75,7 +138,8 @@ namespace PaperlessClient.Mobile.ViewModels
             , Action<T> resultFunc
             , bool forceReload = false)
         {
-            if (forceReload)
+            if (forceReload
+                || getAndFetchFunc == null)
             {
                 try
                 {

@@ -59,7 +59,7 @@ namespace PaperlessClient.Mobile.ViewModels
             , INotificationService notificationService
             , ITenantService tenantService) 
             
-            : base(notificationService, tenantService.GetTennants, null, TennantFilter)
+            : base(notificationService, tenantService, tenantService.GetTennants, null, TennantFilter)
         {
             this.navigationService = navigationService;
             this.tenantService = tenantService;

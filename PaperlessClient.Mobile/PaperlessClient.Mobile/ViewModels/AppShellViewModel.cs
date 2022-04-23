@@ -33,7 +33,7 @@ namespace PaperlessClient.Mobile.ViewModels
         public AppShellViewModel(
             INotificationService notificationService
             , ITenantService tenantService)
-            : base(notificationService)
+            : base(notificationService, tenantService)
         {
             this.tenantService = tenantService;
 

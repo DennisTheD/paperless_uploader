@@ -40,7 +40,7 @@ namespace PaperlessClient.Mobile.ViewModels
         public SetupViewModel(
             INotificationService notificationService
             , ITenantService tenantService) 
-            : base(notificationService)
+            : base(notificationService, tenantService)
         {
             this.tenantService = tenantService;
         }

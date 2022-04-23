@@ -7,6 +7,7 @@ namespace PaperlessClient.Mobile.Views
         public TopLevelContentPage()
             : base()
         {
+            viewModel.Page = this;
             viewModel.InitializeAsync(null);
         }
     }

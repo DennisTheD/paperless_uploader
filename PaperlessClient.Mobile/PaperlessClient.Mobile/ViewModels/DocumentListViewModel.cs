@@ -1,10 +1,8 @@
-﻿using PaperlessClient.Mobile.Events;
+﻿using PaperlessClient.Mobile.Converters;
 using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.Services.Abstraction;
-using PaperlessClient.Mobile.Views;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -54,9 +52,11 @@ namespace PaperlessClient.Mobile.ViewModels
 
         public DocumentListViewModel(
             IDocumentService documentService
-            , INotificationService notificationService) 
+            , INotificationService notificationService
+            , ITenantService tenantService) 
             : base(
                   notificationService
+                  , tenantService
                   , () => documentService.GetDocuments(1)
                   , documentService.GetAndFetchDocuments
                   , FilterDocuments)
@@ -64,7 +64,10 @@ namespace PaperlessClient.Mobile.ViewModels
             this.documentService = documentService;
             MoreDocumentsAvailable = true;
 
-            MessagingCenter.Subscribe<TenantChangedEvent>(this, nameof(TenantChangedEvent), (e) => OnTenantChanged());
+            RequireConverter(
+                typeof(IdsToTagNameListConverter)
+                , typeof(IdToCorrespondentNameConverter)
+                , typeof(IdToDocumentTypeNameConverter));
         }        
 
         private static List<Document> FilterDocuments(string arg1, List<Document> arg2)
@@ -94,12 +97,6 @@ namespace PaperlessClient.Mobile.ViewModels
             else {
                 MoreDocumentsAvailable = false;
             }
-        }
-
-        private void OnTenantChanged()
-        {
-            var currentPage = Page as DocumentListPage;
-            
         }
     }
 }

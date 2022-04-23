@@ -50,7 +50,7 @@ namespace PaperlessClient.Mobile.ViewModels
             , INotificationService notificationService
             , ITenantService tenantService
             , IFileUploadQueueService fileUploadQueueService) 
-            : base(notificationService)
+            : base(notificationService, tenantService)
         {
             this.apiService = apiService;
             this.navigationService = navigationService;
