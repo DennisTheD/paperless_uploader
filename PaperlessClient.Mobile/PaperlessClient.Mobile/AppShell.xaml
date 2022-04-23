@@ -78,14 +78,25 @@
             <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.HomeFill}" />
         </FlyoutItem.Icon>
 
-        <ShellContent 
-            ContentTemplate="{DataTemplate views:LandingPage}" 
-            Route="LandingPage"/>
-
         <ShellContent
             ContentTemplate="{DataTemplate views:DocumentListPage}" 
             Route="DocumentListPage"
-            Title="Documents"/>
+            Title="{ext:Translate DocumentsText}">
+
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.FileFill}" />
+            </ShellContent.Icon>
+        </ShellContent>
+
+        <ShellContent 
+            ContentTemplate="{DataTemplate views:LandingPage}" 
+            Route="LandingPage"
+            Title="{ext:Translate UploadText}">
+
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.FileUploadFill}" />
+            </ShellContent.Icon>
+        </ShellContent>
     </FlyoutItem>
 
     <FlyoutItem

@@ -117,7 +117,7 @@ namespace PaperlessClient.Mobile.ViewModels
             }
 
             await navigationService.NavigateToAndAndPopAsync(
-                $"//{nameof(LandingPage)}"
+                $"//{nameof(DocumentListPage)}"
                 , null);
         }
     }
