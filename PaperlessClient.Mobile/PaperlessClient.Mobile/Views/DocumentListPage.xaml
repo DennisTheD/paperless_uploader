@@ -34,14 +34,17 @@
             <CollectionView
                 ItemsSource="{Binding Items}"
                 RemainingItemsThreshold="3"
-                RemainingItemsThresholdReachedCommand="{Binding LoadMoreDocumentsCommand}">
+                RemainingItemsThresholdReachedCommand="{Binding LoadMoreDocumentsCommand}"
+                SelectionMode="Single"
+                SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Document">
                         
                         <Grid
-                            Padding="15,0"
-                            Margin="0,5,0,10">
+                            Padding="15,5"
+                            Margin="0,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -58,13 +61,13 @@
                                 Margin="0,0,20,0">
                                 
                                 <ffimageloading:CachedImage 
-                                Grid.Column="0"
-                                WidthRequest="100"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                DownsampleToViewSize="True"
-                                Source="{Binding Id, Converter={StaticResource thumbUrlConverter}}"
-                                
+                                    Grid.Column="0"
+                                    WidthRequest="100"
+                                    HeightRequest="141"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    DownsampleToViewSize="True"
+                                    Source="{Binding Id, Converter={StaticResource thumbUrlConverter}}"
                                 />
                             </Frame>
 

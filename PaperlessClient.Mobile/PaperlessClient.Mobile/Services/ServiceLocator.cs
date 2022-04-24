@@ -38,6 +38,7 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<LandingViewModel>().AsSelf();
             builder.RegisterType<TennantListViewModel>().AsSelf();
             builder.RegisterType<DocumentListViewModel>().AsSelf();
+            builder.RegisterType<DocumentViewerViewModel>().AsSelf();
 
             _container = builder.Build();
             setupComplete = true;

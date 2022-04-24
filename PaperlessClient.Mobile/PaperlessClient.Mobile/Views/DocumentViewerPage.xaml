@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:CustomContentPage
+    x:TypeArguments="vms:DocumentViewerViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:PaperlessClient.Mobile.Components"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"    
+    x:Class="PaperlessClient.Mobile.Views.DocumentViewerPage"    
+    Title="{Binding Title}">
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <components:AuthorizedWebView
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Source="{Binding FilePath}">
+                
+            </components:AuthorizedWebView>
+        </StackLayout>
+    </ContentPage.Content>
+</views:CustomContentPage>

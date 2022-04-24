@@ -24,6 +24,7 @@ namespace PaperlessClient.Mobile
 
             //Routing.RegisterRoute(nameof(UploadFilePage), typeof(UploadFilePage));
             Routing.RegisterRoute(nameof(SetupPage), typeof(SetupPage));
+            Routing.RegisterRoute(nameof(DocumentViewerPage), typeof(DocumentViewerPage));
         }
 
         protected override void OnNavigated(ShellNavigatedEventArgs args)
