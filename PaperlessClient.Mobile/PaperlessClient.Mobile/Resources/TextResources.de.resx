@@ -126,6 +126,9 @@
   <data name="DeleteText" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="DocumentDownoadFailedText" xml:space="preserve">
+    <value>Das Dokument konnte nicht geladen werden. Überprüfe die Verbindung und die Server Logs.</value>
+  </data>
   <data name="DocumentsText" xml:space="preserve">
     <value>Dokumente</value>
   </data>
@@ -139,7 +142,7 @@
     <value>Ungültige Serveradresse</value>
   </data>
   <data name="LoginFailedText" xml:space="preserve">
-    <value>Anmeldung fehlgeschlagen. Überprüfe deinen Login und die Server Logs</value>
+    <value>Anmeldung fehlgeschlagen. Überprüfe deinen Login und die Server Logs.</value>
   </data>
   <data name="LoginText" xml:space="preserve">
     <value>Anmelden</value>
@@ -175,7 +178,7 @@
     <value>Titel</value>
   </data>
   <data name="UploadFailedText" xml:space="preserve">
-    <value>Fehler beim Upload der Datei. Überprüfe die Verbindung und die Server Logs</value>
+    <value>Fehler beim Upload der Datei. Überprüfe die Verbindung und die Server Logs.</value>
   </data>
   <data name="UploadText" xml:space="preserve">
     <value>Hochladen</value>

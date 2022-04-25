@@ -88,6 +88,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Failed to download the document from the server. Please check your network connectivity and your server logs. ähnelt.
+        /// </summary>
+        public static string DocumentDownoadFailedText {
+            get {
+                return ResourceManager.GetString("DocumentDownoadFailedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Documents ähnelt.
         /// </summary>
         public static string DocumentsText {

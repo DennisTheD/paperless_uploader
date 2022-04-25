@@ -111,8 +111,11 @@ namespace PaperlessClient.Mobile.ViewModels
                     allConvertersReady = allConvertersReady && TenantAwareConverters.Any(c => c.GetType() == converterType);
                 }
 
-                if (allConvertersReady) { 
-                    await Task.WhenAll(TenantAwareConverters.Select(c => c.UpdateDataSource()));
+                if (allConvertersReady) {
+                    try{
+                        await Task.WhenAll(TenantAwareConverters.Select(c => c.UpdateDataSource()));
+                    }
+                    catch (Exception){}                    
                     OnConvertersReady();
                 }
             }
@@ -121,7 +124,10 @@ namespace PaperlessClient.Mobile.ViewModels
         private async Task HandleTenantChanged(TenantChangedEvent eventArgs)
         {
             OnTenantChanged(eventArgs);
-            await Task.WhenAll(TenantAwareConverters.Select(c => c.UpdateDataSource()));
+            try {
+                await Task.WhenAll(TenantAwareConverters.Select(c => c.UpdateDataSource()));
+            }
+            catch (Exception) {}            
             OnConvertersReady();
         }
 

@@ -1,4 +1,5 @@
-﻿using PaperlessClient.Mobile.Services.Abstraction;
+﻿using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -116,6 +117,17 @@ namespace PaperlessClient.Mobile.ViewModels
             }
             return Task.CompletedTask;
         }
+
+        // Gets called when the tenant was changed
+        // Invalidate all previously loaded items, set the busy state and wait
+        // for the converters to get ready
+        protected override void OnTenantChanged(TenantChangedEvent eventArgs)
+        {
+            Items = null;
+            IsBusy = true;
+        }
+
+
 
         // gets called after any tenant change and when all converters are reday
         protected override void OnConvertersReady()

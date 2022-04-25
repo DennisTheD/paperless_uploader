@@ -5,18 +5,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:PaperlessClient.Mobile.Components"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
-    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"    
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"      
     x:Class="PaperlessClient.Mobile.Views.DocumentViewerPage"    
     Title="{Binding Title}">
     
     <ContentPage.Content>
         <StackLayout>
-            <components:AuthorizedWebView
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="FillAndExpand"
-                Source="{Binding FilePath}">
-                
-            </components:AuthorizedWebView>
+            <RefreshView
+                IsRefreshing="{Binding IsBusy}">
+                <components:AuthorizedWebView
+                    HorizontalOptions="FillAndExpand"
+                    LoadStartCommand="{Binding LoadStartCommand}"
+                    LoadFinishedCommand="{Binding LoadFinishedCommand}"
+                    LoadErrorCommand="{Binding LoadErrorCommand}"
+                    VerticalOptions="FillAndExpand"
+                    Source="{Binding FilePath}" />
+            </RefreshView>
         </StackLayout>
     </ContentPage.Content>
 </views:CustomContentPage>
