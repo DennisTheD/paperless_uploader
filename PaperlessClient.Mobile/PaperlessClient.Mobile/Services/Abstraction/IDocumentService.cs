@@ -8,8 +8,8 @@ namespace PaperlessClient.Mobile.Services.Abstraction
 {
     public interface IDocumentService
     {
-        bool MoreResultsAvailable { get; }
-        IObservable<List<Document>> GetAndFetchDocuments();
-        Task<List<Document>> GetDocuments(int page);
+        IObservable<ApiListResponse<Document>> GetAndFetchDocuments();
+        Task<ApiListResponse<Document>> GetDocuments(int page);
+        Task<ApiListResponse<Document>> SearchDocuments(string query, int page);
     }
 }

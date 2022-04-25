@@ -129,6 +129,9 @@
   <data name="DocumentDownoadFailedText" xml:space="preserve">
     <value>Failed to download the document from the server. Please check your network connectivity and your server logs.</value>
   </data>
+  <data name="DocumentListFetchFailedText" xml:space="preserve">
+    <value>Failed to get the document list from the server.  Please check your network connectivity and your server logs.</value>
+  </data>
   <data name="DocumentsText" xml:space="preserve">
     <value>Documents</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="ReadyText" xml:space="preserve">
     <value>Ready to receive new files</value>
+  </data>
+  <data name="SearchText" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="ServerText" xml:space="preserve">
     <value>Server</value>

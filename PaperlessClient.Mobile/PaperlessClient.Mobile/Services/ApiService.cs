@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace PaperlessClient.Mobile.Services
 {
@@ -35,7 +36,7 @@ namespace PaperlessClient.Mobile.Services
                         endpoint,
                         string.Join("&",
                             parameters.Select(kvp =>
-                                string.Format("{0}={1}", kvp.Key, kvp.Value))));
+                                string.Format("{0}={1}", HttpUtility.UrlEncode(kvp.Key), HttpUtility.UrlEncode(kvp.Value)))));
             }
 
             var tenant = tenantService.GetCurrentTennant();

@@ -1,40 +1,25 @@
 ﻿using PaperlessClient.Mobile.Converters;
+using PaperlessClient.Mobile.Events;
 using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.NavigationHints;
+using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
 using PaperlessClient.Mobile.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace PaperlessClient.Mobile.ViewModels
 {
-    public class DocumentListViewModel : ListViewModelBase<Document>
+    public class DocumentListViewModel : ApiListViewModelsBase<Document>
     {
-        #region props
-        private int currentPage = 1;
-
-        private bool isLoadingMoreDocuments;
-        public bool IsLoadingMoreDocuments {
-            get => isLoadingMoreDocuments;
-            set { 
-                SetProperty(ref isLoadingMoreDocuments, value);
-                LoadMoreDocumentsCommand.ChangeCanExecute();
-            }
+        private bool isInSearchMode;
+        public bool IsInSearchMode {
+            get => isInSearchMode;
+            set => SetProperty(ref isInSearchMode, value);
         }
-
-        private bool moreDocumentsAvailable;
-        public bool MoreDocumentsAvailable
-        {
-            get => moreDocumentsAvailable;
-            set
-            {
-                SetProperty(ref moreDocumentsAvailable, value);
-                LoadMoreDocumentsCommand.ChangeCanExecute();
-            }
-        }
-        #endregion
 
         #region services
         private IDocumentService documentService;
@@ -42,16 +27,31 @@ namespace PaperlessClient.Mobile.ViewModels
         #endregion
 
         #region commands
-        private Command loadMoreDocumentsCommand;
-        public Command LoadMoreDocumentsCommand {
-            get {
-                if (loadMoreDocumentsCommand == null) {
-                    loadMoreDocumentsCommand = new Command(async(o) => { await LoadMoreDocuments(); }
-                    , (o) => !IsLoadingMoreDocuments && MoreDocumentsAvailable);
+        private Command searchCommand;
+        public Command SearchCommand
+        {
+            get
+            {
+                if (searchCommand == null)
+                {
+                    searchCommand = new Command(async (o) => { await SearchDocuments(1); });
                 }
-                return loadMoreDocumentsCommand;
+                return searchCommand;
             }
         }
+
+        private Command quitSearchCommand;
+        public Command QuitSearchCommand
+        {
+            get
+            {
+                if (quitSearchCommand == null)
+                {
+                    quitSearchCommand = new Command(QuitSearch);
+                }
+                return quitSearchCommand;
+            }
+        }        
         #endregion
 
         public DocumentListViewModel(
@@ -62,13 +62,11 @@ namespace PaperlessClient.Mobile.ViewModels
             : base(
                   notificationService
                   , tenantService
-                  , () => documentService.GetDocuments(1)
-                  , documentService.GetAndFetchDocuments
-                  , FilterDocuments)
+                  , documentService.GetDocuments
+                  , documentService.GetAndFetchDocuments)
         {
             this.documentService = documentService;
             this.navigationService = navigationService;
-            MoreDocumentsAvailable = true;
 
             RequireConverter(
                 typeof(IdsToTagNameListConverter)
@@ -78,11 +76,6 @@ namespace PaperlessClient.Mobile.ViewModels
             ItemSelectedCommand = new Command(async(d) => await OnDocumentSelected(d));
         }
 
-        private static List<Document> FilterDocuments(string arg1, List<Document> arg2)
-        {
-            return arg2;
-        }
-
         private async Task OnDocumentSelected(object doc)
         {
             if (SelectedItem != null) {
@@ -90,29 +83,65 @@ namespace PaperlessClient.Mobile.ViewModels
                     nameof(DocumentViewerPage)
                     , new DocumentViewerNavigationHint() { DocumentId = SelectedItem.Id, DocumentTitle = SelectedItem.Title });
             }
+        }       
+
+        private async Task SearchDocuments(int page = 1)
+        {
+            if (page == 1) // switch into search mode
+            {
+                Items = null;
+                IsInSearchMode = true;
+            }      
+            
+            IsBusy = true;
+            try
+            {                
+                var apiResponse = await documentService.SearchDocuments(SearchText, page);
+                MoreItemsAvailable = !string.IsNullOrWhiteSpace(apiResponse.Next);
+                if (page == 1)
+                {
+                    IsInSearchMode = true;
+                    Items = new ObservableCollection<Document>(apiResponse.Results);
+                    currentPage = 1;
+                }
+                else {
+                    apiResponse.Results.ForEach(d => Items.Add(d));
+                }
+            }
+            catch (Exception)
+            {
+                await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.DocumentListFetchFailedText);
+            }
+            finally {
+                IsBusy = false;
+            }            
         }
 
-        private async Task LoadMoreDocuments()
+        protected override async Task LoadMoreItems()
         {
-            if (documentService.MoreResultsAvailable)
+            if (!IsInSearchMode)
             {
-                IsLoadingMoreDocuments = true;
-                try
-                {
-                    var documents = await documentService.GetDocuments(++currentPage);
-                    documents.ForEach(document => Items.Add(document));
-                }
-                catch (Exception)
-                {
-                }
-                finally
-                {
-                    IsLoadingMoreDocuments = false;
-                }
+                await base.LoadMoreItems();
             }
-            else {
-                MoreDocumentsAvailable = false;
-            }
+            else if (MoreItemsAvailable) {
+                IsLoadingMoreItems = true;
+                await SearchDocuments(++currentPage);
+                IsLoadingMoreItems = false;
+            }                          
+        }
+
+        private void QuitSearch()
+        {
+            IsInSearchMode = false;
+            Items = null;
+            RefreshCommand.Execute(false);
+        }
+
+        protected override void OnTenantChanged(TenantChangedEvent eventArgs)
+        {
+            SearchText = null;
+            IsInSearchMode = false;
+            base.OnTenantChanged(eventArgs);
         }
     }
 }

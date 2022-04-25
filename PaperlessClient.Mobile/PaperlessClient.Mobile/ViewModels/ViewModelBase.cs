@@ -46,17 +46,15 @@ namespace PaperlessClient.Mobile.ViewModels
         protected bool _isBusy;
         public bool IsBusy
         {
-            get
-            {
-                return _isBusy;
-            }
-            set
-            {
-                var oldVal = _isBusy;
-                _isBusy = value;
-                if (oldVal != value)
-                    OnPropertyChanged();
-            }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        protected bool _isRefreshing;
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set => SetProperty(ref _isRefreshing, value);
         }
         #endregion
 
@@ -149,9 +147,8 @@ namespace PaperlessClient.Mobile.ViewModels
             {
                 try
                 {
-                    IsBusy = true;
                     var result = await fetchFunc();
-                    IsBusy = false;
+                    IsRefreshing = false;
                     resultFunc(result);
                 }
                 catch (Exception)
@@ -160,24 +157,23 @@ namespace PaperlessClient.Mobile.ViewModels
                 }
                 finally
                 {
-                    IsBusy = false;
+                    IsRefreshing = false;
                 }
             }
             else
             {
-                IsBusy = true;
                 getAndFetchFunc()
                     .Subscribe(
                         (a) => {
-                            IsBusy = false;
+                            IsRefreshing = false;
                             resultFunc(a);
                         }
                         , (e) => {
                             notificationService.NotifyIfInForeground(this, "Fehler", "Die Daten konnten nicht aktuallisiert werden.");
-                            IsBusy = false;
+                            IsRefreshing = false;
                         }
                         , () => {
-                            IsBusy = false;
+                            IsRefreshing = false;
                         });
             }
         }

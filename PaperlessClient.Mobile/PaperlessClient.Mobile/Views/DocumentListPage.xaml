@@ -3,6 +3,7 @@
     x:TypeArguments="vms:DocumentListViewModel"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
     xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"
     xmlns:models="clr-namespace:PaperlessClient.Mobile.Models"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -28,39 +29,52 @@
     <ContentPage.Content>
         <RefreshView 
             IsEnabled="True"
-            IsRefreshing="{Binding IsBusy}"
+            IsRefreshing="{Binding IsRefreshing}"
             Command="{Binding RefreshCommand}">
 
-            <CollectionView
-                ItemsSource="{Binding Items}"
-                RemainingItemsThreshold="3"
-                RemainingItemsThresholdReachedCommand="{Binding LoadMoreDocumentsCommand}"
-                SelectionMode="Single"
-                SelectionChangedCommand="{Binding ItemSelectedCommand}"
-                SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <StackLayout>
+                <SearchBar 
+                    Text="{Binding SearchText}"
+                    Placeholder="{ext:Translate SearchText}" 
+                    SearchCommand="{Binding SearchCommand}">
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Document">
-                        
-                        <Grid
+                    <SearchBar.Behaviors>
+                        <behaviors:QuitSearchCommandBehavior Command="{Binding QuitSearchCommand}" />
+                    </SearchBar.Behaviors>
+                </SearchBar>
+
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+
+                <CollectionView
+                    ItemsSource="{Binding Items}"
+                    RemainingItemsThreshold="3"
+                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreItemsCommand}"
+                    SelectionMode="Single"
+                    SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Document">
+
+                            <Grid
                             Padding="15,5"
                             Margin="0,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
 
-                            <Frame
+                                <Frame
                                 HasShadow="False"
                                 BorderColor="Black"
                                 Padding="6"
                                 Margin="0,0,20,0">
-                                
-                                <ffimageloading:CachedImage 
+
+                                    <ffimageloading:CachedImage 
                                     Grid.Column="0"
                                     WidthRequest="100"
                                     HeightRequest="141"
@@ -69,79 +83,80 @@
                                     DownsampleToViewSize="True"
                                     Source="{Binding Id, Converter={StaticResource thumbUrlConverter}}"
                                 />
-                            </Frame>
+                                </Frame>
 
-                            <StackLayout Grid.Column="1">
-                                <Label
+                                <StackLayout Grid.Column="1">
+                                    <Label
                                     Style="{StaticResource descriptionLabel}"
                                     Text="{Binding DocumentType, Converter={StaticResource docTypeConverter}}"
                                     FontSize="14"/>
 
-                                <Frame
+                                    <Frame
                                     BackgroundColor="#D3D8D9"
                                     Padding="5"
                                     Margin="0,10"
                                     HorizontalOptions="Start"
                                     HasShadow="False">
 
-                                    <Label 
+                                        <Label 
                                         FontAttributes="Bold"
                                         HorizontalOptions="Start"
                                         LineBreakMode="TailTruncation"
                                         Text="{Binding Title}" />
-                                    
-                                </Frame>
 
-                                <Label
+                                    </Frame>
+
+                                    <Label
                                     Style="{StaticResource descriptionLabel}"
                                     VerticalTextAlignment="Center">
 
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{x:Static fonts:RemixiconFont.CalendarFill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding Created, StringFormat='{0:dd.MM.yyyy}'}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{x:Static fonts:RemixiconFont.CalendarFill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding Created, StringFormat='{0:dd.MM.yyyy}'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
 
-                                <Label
+                                    <Label
                                     IsVisible="{Binding Tags, Converter={StaticResource listNotEmptyConverter}}"
                                     Style="{StaticResource descriptionLabel}">
 
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{x:Static fonts:RemixiconFont.PriceTag3Fill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding Tags, Converter={StaticResource tagNameListConverter}}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{x:Static fonts:RemixiconFont.PriceTag3Fill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding Tags, Converter={StaticResource tagNameListConverter}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
 
-                                <Label
+                                    <Label
                                     IsVisible="{Binding Correspondent, Converter={StaticResource notNullConverter}}"
                                     Style="{StaticResource descriptionLabel}">
 
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{x:Static fonts:RemixiconFont.UserReceivedFill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding Correspondent, Converter={StaticResource correspondentConverter}}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                            </StackLayout>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{x:Static fonts:RemixiconFont.UserReceivedFill}" FontFamily="{StaticResource RemixiconFont}" TextColor="{StaticResource Primary}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding Correspondent, Converter={StaticResource correspondentConverter}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
 
-                            <BoxView
+                                <BoxView
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 HeightRequest="1"
                                 Color="#ddd"/>
-                        </Grid>
-                        
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
 
         </RefreshView>
     </ContentPage.Content>

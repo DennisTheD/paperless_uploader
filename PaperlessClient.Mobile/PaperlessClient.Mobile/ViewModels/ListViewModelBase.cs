@@ -1,4 +1,5 @@
 ﻿using PaperlessClient.Mobile.Events;
+using PaperlessClient.Mobile.Models;
 using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
@@ -132,6 +133,7 @@ namespace PaperlessClient.Mobile.ViewModels
         // gets called after any tenant change and when all converters are reday
         protected override void OnConvertersReady()
         {
+            IsBusy = false;
             RefreshCommand.Execute(false);
         }
 

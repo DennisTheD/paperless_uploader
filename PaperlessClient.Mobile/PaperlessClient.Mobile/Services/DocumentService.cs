@@ -3,6 +3,7 @@ using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PaperlessClient.Mobile.Services
@@ -10,14 +11,11 @@ namespace PaperlessClient.Mobile.Services
     public class DocumentService : IDocumentService
     {
         private static readonly string DOCUMENT_ENDPOINT = "api/documents/";
+        private CancellationTokenSource lastRequestCancellationToken;
+        private Task lastTask;
 
         private IApiService apiService;
         private IPersistenceService persistenceService;
-
-        private int currentPage = 0;
-        private bool moreResultsAvailable = true;
-
-        public bool MoreResultsAvailable => moreResultsAvailable;
 
         public DocumentService(
             IApiService apiService
@@ -27,18 +25,42 @@ namespace PaperlessClient.Mobile.Services
             this.persistenceService = persistenceService;
         }
 
-        public IObservable<List<Document>> GetAndFetchDocuments()
+        public IObservable<ApiListResponse<Document>> GetAndFetchDocuments()
             => persistenceService.GetAndFetchObjectAsync(DOCUMENT_ENDPOINT, () => GetDocuments(1));
 
-        public async Task<List<Document>> GetDocuments(int page)
+        public Task<ApiListResponse<Document>> GetDocuments(int page)
         {
-            var documentResponse = await apiService.Get<ApiListResponse<Document>>(
+            CancelLastRequest();
+            var response = apiService.Get<ApiListResponse<Document>>(
                 DOCUMENT_ENDPOINT
-                , new Dictionary<string, string>() { {"page", page.ToString() } });
+                , new Dictionary<string, string>() { {"page", page.ToString() } }
+                , lastRequestCancellationToken.Token);
+            lastTask = response;
+            return response;
+        }
 
-            currentPage = 1;
-            moreResultsAvailable = !string.IsNullOrWhiteSpace(documentResponse?.Next);
-            return documentResponse.Results;
+        public Task<ApiListResponse<Document>> SearchDocuments(string query, int page)
+        {
+            CancelLastRequest();
+            var response = apiService.Get<ApiListResponse<Document>>(
+                DOCUMENT_ENDPOINT
+                , new Dictionary<string, string>() {
+                    {"page", page.ToString() }
+                    , { "query", query }
+                }, lastRequestCancellationToken.Token);
+            lastTask = response;
+            return response;
+        }
+
+        private void CancelLastRequest() {
+            // cancel the last request if its still running
+            if (lastRequestCancellationToken != null
+                && !lastTask.IsCompleted)
+            {
+                lastRequestCancellationToken.Cancel();
+            }
+
+            lastRequestCancellationToken = new CancellationTokenSource();
         }
     }
 }

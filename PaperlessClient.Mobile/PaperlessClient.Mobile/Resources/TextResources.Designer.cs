@@ -97,6 +97,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Failed to get the document list from the server.  Please check your network connectivity and your server logs. ähnelt.
+        /// </summary>
+        public static string DocumentListFetchFailedText {
+            get {
+                return ResourceManager.GetString("DocumentListFetchFailedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Documents ähnelt.
         /// </summary>
         public static string DocumentsText {
@@ -183,6 +192,15 @@ namespace PaperlessClient.Mobile.Resources {
         public static string ReadyText {
             get {
                 return ResourceManager.GetString("ReadyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Search ähnelt.
+        /// </summary>
+        public static string SearchText {
+            get {
+                return ResourceManager.GetString("SearchText", resourceCulture);
             }
         }
         
