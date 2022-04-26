@@ -109,6 +109,16 @@
         <ShellContent ContentTemplate="{DataTemplate views:TennantListPage}" />
     </FlyoutItem>
 
+    <FlyoutItem
+        Title="{ext:Translate PreferencesText}">
+
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.Settings3Fill}" />
+        </FlyoutItem.Icon>
+
+        <ShellContent ContentTemplate="{DataTemplate views:PreferencesPage}" />
+    </FlyoutItem>
+
     <ShellContent 
         ContentTemplate="{DataTemplate views:UploadFilePage}" 
         FlyoutItemIsVisible="False" 

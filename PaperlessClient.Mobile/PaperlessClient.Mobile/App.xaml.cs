@@ -15,6 +15,7 @@ namespace PaperlessClient.Mobile
         private INavigationService navigationService;      
         private ITenantService tenantService;
         private IFileUploadQueueService fileUploadQueueService;
+        private IPreferenceService preferenceService;
 
         public App()
         {
@@ -23,10 +24,12 @@ namespace PaperlessClient.Mobile
             //ServiceLocator.Setup();
             MessagingCenter.Subscribe<FileUploadRequest>(this, nameof(FileUploadRequest), UploadRequestReceived);
             MessagingCenter.Subscribe<LoginRequiredEvent>(this, nameof(LoginRequiredEvent), LogoutRequestReceived);
+            MessagingCenter.Subscribe<AppAuthRequiredEvent>(this, nameof(AppAuthRequiredEvent), async (o) => await InitializeAsync());
 
             navigationService = ServiceLocator.Resolve<INavigationService>();
             tenantService = ServiceLocator.Resolve<ITenantService>();
             fileUploadQueueService = ServiceLocator.Resolve<IFileUploadQueueService>();
+            preferenceService = ServiceLocator.Resolve<IPreferenceService>();
 
             MainPage = new LoadingPage();
 
@@ -48,9 +51,28 @@ namespace PaperlessClient.Mobile
                 , new UploadFileNavigationHint() { DeleteFileAfterUpload = true, FileUri = uploadRequest.FileUri, Title = uploadRequest.FileTitle });
         }
 
-        private async Task InitializeAsync() {
-            await tenantService.InitializeAsync();
-            await navigationService.InitializeAsync();
+        public async Task InitializeAsync() {
+            var authRequired = preferenceService.GetBoolPreference(AppPreference.USE_AUTHENTICATION);
+            var authSuccess = false;
+            if (authRequired) {
+                var auth = ServiceLocator.Resolve<IAppAuthService>();
+                try
+                {
+                    authSuccess = await auth.AuthenticateUser();
+                }
+                catch (Exception) { }                
+            }
+
+            if (!authRequired || authSuccess)
+            {
+                await tenantService.InitializeAsync();
+                await navigationService.InitializeAsync();
+            }
+            else {
+                if (MainPage == null || MainPage.GetType() != typeof(AuthenticationFailurePage)) {
+                    MainPage = new AuthenticationFailurePage();
+                }
+            }
         }
 
         protected override void OnStart()

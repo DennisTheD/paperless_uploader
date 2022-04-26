@@ -123,6 +123,18 @@
   <data name="AddText" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="AuthFailedText" xml:space="preserve">
+    <value>Authentication failed</value>
+  </data>
+  <data name="AuthPreferenceDescription" xml:space="preserve">
+    <value>If this option is enabled, the app will require authentication on every startup.</value>
+  </data>
+  <data name="AuthReasonText" xml:space="preserve">
+    <value>Authentication is required to access your documents</value>
+  </data>
+  <data name="CancelText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
   <data name="DeleteTenantConfirmationText" xml:space="preserve">
     <value>Are you sure you want to delete this Server?</value>
   </data>
@@ -165,8 +177,14 @@
   <data name="PasswordText" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="PreferencesText" xml:space="preserve">
+    <value>Preferences</value>
+  </data>
   <data name="ReadyText" xml:space="preserve">
     <value>Ready to receive new files</value>
+  </data>
+  <data name="RetryAuthText" xml:space="preserve">
+    <value>Retry</value>
   </data>
   <data name="SearchText" xml:space="preserve">
     <value>Search</value>
@@ -194,6 +212,9 @@
   </data>
   <data name="UploadText" xml:space="preserve">
     <value>Upload</value>
+  </data>
+  <data name="UseAuthText" xml:space="preserve">
+    <value>Use authentication</value>
   </data>
   <data name="UsernameText" xml:space="preserve">
     <value>Username</value>

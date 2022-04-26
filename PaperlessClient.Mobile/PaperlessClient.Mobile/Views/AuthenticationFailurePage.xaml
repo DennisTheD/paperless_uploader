@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:TopLevelContentPage
+    x:TypeArguments="vms:AuthenticationFailureViewModel" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PaperlessClient.Mobile.Views.AuthenticationFailurePage"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"  
+    BackgroundColor="{StaticResource Primary}">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label 
+                Text="{ext:Translate AuthFailedText}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                TextColor="White"/>
+            
+            <Button 
+                Command="{Binding RetryAuthCommand}"
+                FontAttributes="Bold"
+                Text="{ext:Translate RetryAuthText}" />
+            
+        </StackLayout>
+    </ContentPage.Content>
+</views:TopLevelContentPage>

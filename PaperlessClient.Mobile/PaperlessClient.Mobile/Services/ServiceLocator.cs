@@ -4,6 +4,7 @@ using PaperlessClient.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace PaperlessClient.Mobile.Services
 {
@@ -30,6 +31,7 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<DocumentTypeService>().As<IDocumentTypeService>();
             builder.RegisterType<TagService>().As<ITagService>();
             builder.RegisterType<CorrespondentService>().As<ICorrespondentService>();
+            builder.RegisterType<PreferenceService>().As<IPreferenceService>().SingleInstance();
 
             //vms
             builder.RegisterType<AppShellViewModel>().AsSelf();
@@ -39,6 +41,11 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<TennantListViewModel>().AsSelf();
             builder.RegisterType<DocumentListViewModel>().AsSelf();
             builder.RegisterType<DocumentViewerViewModel>().AsSelf();
+            builder.RegisterType<PreferencesViewModel>().AsSelf();
+            builder.RegisterType<AuthenticationFailureViewModel>().AsSelf();
+
+            //platform specifics
+            builder.Register<IAppAuthService>(c => DependencyService.Get<IAppAuthService>());
 
             _container = builder.Build();
             setupComplete = true;
