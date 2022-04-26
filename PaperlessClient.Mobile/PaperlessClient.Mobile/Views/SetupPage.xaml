@@ -10,7 +10,7 @@
     x:Class="PaperlessClient.Mobile.Views.SetupPage"
     Padding="10,10,10,10"
     NavigationPage.HasNavigationBar="True"
-    Title="Server verbinden">
+    Title="{ext:Translate AddServerText}">
 
     <ContentPage.Resources>
         <ResourceDictionary>

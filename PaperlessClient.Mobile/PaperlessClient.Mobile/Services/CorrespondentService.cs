@@ -13,8 +13,9 @@ namespace PaperlessClient.Mobile.Services
 
         public CorrespondentService(
             IApiService apiService
-            , IPersistenceService persistenceService) 
-            : base(apiService, persistenceService, CORRESPONDENT_ENDPOINT)
+            , IPersistenceService persistenceService
+            , ITenantService tenantService) 
+            : base(apiService, persistenceService, tenantService, CORRESPONDENT_ENDPOINT)
         {
         }
 

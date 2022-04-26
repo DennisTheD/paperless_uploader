@@ -61,6 +61,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add server ähnelt.
+        /// </summary>
+        public static string AddServerText {
+            get {
+                return ResourceManager.GetString("AddServerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die New ähnelt.
         /// </summary>
         public static string AddText {
@@ -120,6 +129,15 @@ namespace PaperlessClient.Mobile.Resources {
         public static string ErrorText {
             get {
                 return ResourceManager.GetString("ErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Failed to get new data from the server. Please check your network connectivity and your server logs. ähnelt.
+        /// </summary>
+        public static string FetchFailedText {
+            get {
+                return ResourceManager.GetString("FetchFailedText", resourceCulture);
             }
         }
         

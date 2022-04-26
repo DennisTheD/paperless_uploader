@@ -12,15 +12,18 @@ namespace PaperlessClient.Mobile.Services
     {
         protected IApiService apiService;
         protected IPersistenceService persistenceService;
+        protected ITenantService tenantService;
         protected string defaultEndpoint;
 
         protected BaseClient(
             IApiService apiService
             , IPersistenceService persistenceService
+            , ITenantService tenantService
             , string defaultEndpoint)
         {
             this.apiService = apiService;
             this.persistenceService = persistenceService;
+            this.tenantService = tenantService;
             this.defaultEndpoint = defaultEndpoint;
         }
 
@@ -34,13 +37,13 @@ namespace PaperlessClient.Mobile.Services
         protected IObservable<TFetchType> InternalGetAndFetch<TFetchType>(string endpoint)
         {
             return persistenceService.GetAndFetchObjectAsync<TFetchType>(
-                $"baseapiclient.{endpoint}"
+                FormatPersistenceKey(endpoint)
                 , () => InternalFetch<TFetchType>(endpoint));
         }
 
-        public IObservable<List<TEntityType>> InternalGetAndFetchAll(string endpoint)
+        protected IObservable<List<TEntityType>> InternalGetAndFetchAll(string endpoint)
             => persistenceService.GetAndFetchObjectAsync(
-                $"baseapiclient.{endpoint}.all"
+                FormatPersistenceKey(endpoint) + "_all"
                 , () => InternalFetchAll(endpoint));
 
         protected async Task<List<TEntityType>> InternalFetchAll(string endpoint) { 
@@ -60,5 +63,8 @@ namespace PaperlessClient.Mobile.Services
 
             return result;
         }
+
+        protected string FormatPersistenceKey(string key)
+            => tenantService.GetCurrentTennant()?.Endpoint ?? "" + key;
     }
 }

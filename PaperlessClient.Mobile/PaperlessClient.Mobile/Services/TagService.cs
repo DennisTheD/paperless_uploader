@@ -15,8 +15,9 @@ namespace PaperlessClient.Mobile.Services
 
         public TagService(
             IApiService apiService
-            , IPersistenceService persistenceService) 
-            : base(apiService, persistenceService, TAG_ENDPOINT)
+            , IPersistenceService persistenceService
+            , ITenantService tenantService) 
+            : base(apiService, persistenceService, tenantService, TAG_ENDPOINT)
         {
         }
 

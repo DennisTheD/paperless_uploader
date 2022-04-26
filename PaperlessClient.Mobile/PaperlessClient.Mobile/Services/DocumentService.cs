@@ -8,25 +8,22 @@ using System.Threading.Tasks;
 
 namespace PaperlessClient.Mobile.Services
 {
-    public class DocumentService : IDocumentService
+    public class DocumentService : BaseClient<Document>, IDocumentService
     {
         private static readonly string DOCUMENT_ENDPOINT = "api/documents/";
         private CancellationTokenSource lastRequestCancellationToken;
         private Task lastTask;
 
-        private IApiService apiService;
-        private IPersistenceService persistenceService;
-
         public DocumentService(
             IApiService apiService
-            , IPersistenceService persistenceService)
+            , IPersistenceService persistenceService
+            , ITenantService tenantService)
+            :base(apiService, persistenceService, tenantService, DOCUMENT_ENDPOINT)
         {
-            this.apiService = apiService;
-            this.persistenceService = persistenceService;
         }
 
         public IObservable<ApiListResponse<Document>> GetAndFetchDocuments()
-            => persistenceService.GetAndFetchObjectAsync(DOCUMENT_ENDPOINT, () => GetDocuments(1));
+            => persistenceService.GetAndFetchObjectAsync(FormatPersistenceKey(DOCUMENT_ENDPOINT), () => GetDocuments(1));
 
         public Task<ApiListResponse<Document>> GetDocuments(int page)
         {

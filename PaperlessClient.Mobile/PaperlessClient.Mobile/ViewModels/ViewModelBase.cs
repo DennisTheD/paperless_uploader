@@ -2,6 +2,7 @@
 using PaperlessClient.Mobile.Converters.Interfaces;
 using PaperlessClient.Mobile.Events;
 using PaperlessClient.Mobile.Models;
+using PaperlessClient.Mobile.Resources;
 using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
@@ -153,7 +154,7 @@ namespace PaperlessClient.Mobile.ViewModels
                 }
                 catch (Exception)
                 {
-                    await notificationService.NotifyIfInForeground(this, "Fehler", "Die Daten konnten nicht aktuallisiert werden.");
+                    await notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.FetchFailedText);
                 }
                 finally
                 {
@@ -169,7 +170,7 @@ namespace PaperlessClient.Mobile.ViewModels
                             resultFunc(a);
                         }
                         , (e) => {
-                            notificationService.NotifyIfInForeground(this, "Fehler", "Die Daten konnten nicht aktuallisiert werden.");
+                            notificationService.NotifyIfInForeground(this, TextResources.ErrorText, TextResources.FetchFailedText);
                             IsRefreshing = false;
                         }
                         , () => {
