@@ -25,7 +25,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Paperless</string>
 	<key>CFBundleIdentifier</key>
-	<string>de.ddoering.paperlessmobile</string>
+	<string>de.ddoering.paperless</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
@@ -45,7 +45,11 @@
 			<array>
 				<string>com.adobe.pdf</string>
 			</array>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
 		</dict>
 	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<string>NO</string>
 </dict>
 </plist>
