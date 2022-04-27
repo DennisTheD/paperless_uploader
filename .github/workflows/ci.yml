@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feature-ci-cd ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, feature-ci-cd ]
 
   workflow_dispatch:
 
