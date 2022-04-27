@@ -45,3 +45,10 @@ jobs:
 
       - name: Build iOS
         run: MSBuild /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true $IOS_PROJECT_PATH/PaperlessClient.Mobile.iOS.csproj
+      
+      - name: Upload app to App Store Connect
+        env:
+          APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
+          APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+        run: |
+          xcrun altool --upload-app -t ios -f "$IOS_PROJECT_PATH/bin/iPhone/Release/PaperlessClient.Mobile.iOS.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
