@@ -37,8 +37,8 @@ jobs:
 
       - name: Set iOS version
         run: |
-          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${{ secrets.APP_VERSION }}" ./GitHubActions.iOS/Info.plist
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" ./GitHubActions.iOS/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${{ secrets.APP_VERSION }}" $IOS_PROJECT_PATH/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" $IOS_PROJECT_PATH/Info.plist
 
       - name: Restore NuGet packages
         run: nuget restore
