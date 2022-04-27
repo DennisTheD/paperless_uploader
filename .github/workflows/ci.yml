@@ -12,7 +12,8 @@ jobs:
   
   build:
     runs-on: macos-latest
-
+    env:
+      IOS_PROJECT_PATH: ./PaperlessClient.Mobile/PaperlessClient.Mobile.iOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -43,4 +44,4 @@ jobs:
         run: nuget restore
 
       - name: Build iOS
-        run: MSBuild /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true ./PaperlessClient.Mobile/PaperlessClient.Mobile.iOS/PaperlessClient.Mobile.iOS.csproj
+        run: MSBuild /t:Build /p:Configuration=Release /p:Platform=iPhone /p:BuildIpa=true $IOS_PROJECT_PATH/PaperlessClient.Mobile.iOS.csproj
