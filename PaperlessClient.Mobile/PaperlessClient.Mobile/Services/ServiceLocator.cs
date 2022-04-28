@@ -42,7 +42,7 @@ namespace PaperlessClient.Mobile.Services
             builder.RegisterType<DocumentListViewModel>().AsSelf();
             builder.RegisterType<DocumentViewerViewModel>().AsSelf();
             builder.RegisterType<PreferencesViewModel>().AsSelf();
-            builder.RegisterType<AuthenticationFailureViewModel>().AsSelf();
+            builder.RegisterType<LockViewModel>().AsSelf();
 
             //platform specifics
             builder.Register<IAppAuthService>(c => DependencyService.Get<IAppAuthService>());

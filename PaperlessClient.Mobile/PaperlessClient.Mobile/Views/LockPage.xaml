@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:TopLevelContentPage
+    x:TypeArguments="vms:LockViewModel" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PaperlessClient.Mobile.Views.LockPage"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"  
+    xmlns:fonts="clr-namespace:PaperlessClient.Mobile.Resources.Fonts"
+    BackgroundColor="{StaticResource Primary}">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label 
+                Grid.Row="1"
+                Text="{x:Static fonts:RemixiconFont.Lock2Fill}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                TextColor="White"
+                FontFamily="{StaticResource RemixiconFont}"
+                FontSize="60"/>
+
+            <Button 
+                Grid.Row="2"
+                Command="{Binding RetryAuthCommand}"
+                FontAttributes="Bold"
+                Text="{ext:Translate UnlockText}" />
+        </Grid>
+    </ContentPage.Content>
+</views:TopLevelContentPage>

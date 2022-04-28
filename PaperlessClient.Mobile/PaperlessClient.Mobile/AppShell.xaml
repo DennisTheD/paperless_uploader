@@ -71,6 +71,11 @@
         </CollectionView>
     </Shell.FlyoutHeader>
 
+    <ShellContent 
+        ContentTemplate="{DataTemplate views:LockPage}" 
+        FlyoutItemIsVisible="False" 
+        Route="LockPage" />
+    
     <FlyoutItem
         Title="Paperless">
 

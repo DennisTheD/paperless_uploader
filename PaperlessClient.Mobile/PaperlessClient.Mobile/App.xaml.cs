@@ -24,7 +24,6 @@ namespace PaperlessClient.Mobile
             //ServiceLocator.Setup();
             MessagingCenter.Subscribe<FileUploadRequest>(this, nameof(FileUploadRequest), UploadRequestReceived);
             MessagingCenter.Subscribe<LoginRequiredEvent>(this, nameof(LoginRequiredEvent), LogoutRequestReceived);
-            MessagingCenter.Subscribe<AppAuthRequiredEvent>(this, nameof(AppAuthRequiredEvent), async (o) => await InitializeAsync());
 
             navigationService = ServiceLocator.Resolve<INavigationService>();
             tenantService = ServiceLocator.Resolve<ITenantService>();
@@ -52,27 +51,8 @@ namespace PaperlessClient.Mobile
         }
 
         public async Task InitializeAsync() {
-            var authRequired = preferenceService.GetBoolPreference(AppPreference.USE_AUTHENTICATION);
-            var authSuccess = false;
-            if (authRequired) {
-                var auth = ServiceLocator.Resolve<IAppAuthService>();
-                try
-                {
-                    authSuccess = await auth.AuthenticateUser();
-                }
-                catch (Exception) { }                
-            }
-
-            if (!authRequired || authSuccess)
-            {
-                await tenantService.InitializeAsync();
-                await navigationService.InitializeAsync();
-            }
-            else {
-                if (MainPage == null || MainPage.GetType() != typeof(AuthenticationFailurePage)) {
-                    MainPage = new AuthenticationFailurePage();
-                }
-            }
+            await tenantService.InitializeAsync();
+            await navigationService.InitializeAsync();
         }
 
         protected override void OnStart()
@@ -81,6 +61,10 @@ namespace PaperlessClient.Mobile
 
         protected override void OnSleep()
         {
+            if (!navigationService.IsLocked
+                && preferenceService.GetBoolPreference(AppPreference.USE_AUTHENTICATION)) {
+                navigationService.Lock();
+            }
         }
 
         protected override void OnResume()

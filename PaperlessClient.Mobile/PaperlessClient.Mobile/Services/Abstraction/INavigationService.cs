@@ -11,10 +11,14 @@ namespace PaperlessClient.Mobile.Services.Abstraction
         Task InitializationTask { get; }
         ViewModelBase PreviousPageViewModel { get; }
         ViewModelBase ActiveViewModel { get; set; }
+        bool IsLocked { get; }
+
         Task InitializeAsync();
         Task NavigateToAsync(string uri);
         Task NavigateToAsync(string uri, object parameter);
         Task NavigateToAndAndPopAsync(string uri, object parameter);
         Task PopAsync();
+        Task Lock();
+        Task Unlock();
     }
 }

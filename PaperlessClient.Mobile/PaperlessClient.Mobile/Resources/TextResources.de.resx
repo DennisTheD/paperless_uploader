@@ -183,9 +183,6 @@
   <data name="ReadyText" xml:space="preserve">
     <value>Bereit zum Empfang neuer Dokumente</value>
   </data>
-  <data name="RetryAuthText" xml:space="preserve">
-    <value>Erneut versuchen</value>
-  </data>
   <data name="SearchText" xml:space="preserve">
     <value>Suchen</value>
   </data>
@@ -206,6 +203,9 @@
   </data>
   <data name="TitleText" xml:space="preserve">
     <value>Titel</value>
+  </data>
+  <data name="UnlockText" xml:space="preserve">
+    <value>Entsperren</value>
   </data>
   <data name="UploadFailedText" xml:space="preserve">
     <value>Fehler beim Upload der Datei. Überprüfe die Verbindung und die Server Logs.</value>

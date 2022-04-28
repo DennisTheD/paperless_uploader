@@ -259,15 +259,6 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Retry ähnelt.
-        /// </summary>
-        public static string RetryAuthText {
-            get {
-                return ResourceManager.GetString("RetryAuthText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Search ähnelt.
         /// </summary>
         public static string SearchText {
@@ -327,6 +318,15 @@ namespace PaperlessClient.Mobile.Resources {
         public static string TitleText {
             get {
                 return ResourceManager.GetString("TitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unlock ähnelt.
+        /// </summary>
+        public static string UnlockText {
+            get {
+                return ResourceManager.GetString("UnlockText", resourceCulture);
             }
         }
         

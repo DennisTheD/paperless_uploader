@@ -11,9 +11,9 @@ using Xamarin.Forms.Xaml;
 namespace PaperlessClient.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AuthenticationFailurePage : TopLevelContentPage<AuthenticationFailureViewModel>
+    public partial class LockPage : TopLevelContentPage<LockViewModel>
     {
-        public AuthenticationFailurePage()
+        public LockPage()
         {
             InitializeComponent();
         }
