@@ -53,5 +53,12 @@
 	<string>NO</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>This app uses biometric authentication to keep your documents safe.</string>
+	<key>CFBundleLocalizations</key>	
+	<array>
+		<string>en</string>
+		<string>de</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
 </dict>
 </plist>
