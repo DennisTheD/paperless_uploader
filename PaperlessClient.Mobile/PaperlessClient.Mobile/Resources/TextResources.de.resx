@@ -123,6 +123,18 @@
   <data name="AddText" xml:space="preserve">
     <value>Neu</value>
   </data>
+  <data name="AuthFailedText" xml:space="preserve">
+    <value>Authentifizierung fehlgeschlagen</value>
+  </data>
+  <data name="AuthPreferenceDescription" xml:space="preserve">
+    <value>Bei aktivieren dieser Option verlangt die App bei jedem start eine Authentifizierung.</value>
+  </data>
+  <data name="AuthReasonText" xml:space="preserve">
+    <value>Authentifizierung zum Zugriff auf deine Dokumente erforderlich</value>
+  </data>
+  <data name="CancelText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
   <data name="DeleteTenantConfirmationText" xml:space="preserve">
     <value>Möchtest du diesen Server wirklich löschen?</value>
   </data>
@@ -165,6 +177,9 @@
   <data name="PasswordText" xml:space="preserve">
     <value>Passwort</value>
   </data>
+  <data name="PreferencesText" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
   <data name="ReadyText" xml:space="preserve">
     <value>Bereit zum Empfang neuer Dokumente</value>
   </data>
@@ -189,11 +204,17 @@
   <data name="TitleText" xml:space="preserve">
     <value>Titel</value>
   </data>
+  <data name="UnlockText" xml:space="preserve">
+    <value>Entsperren</value>
+  </data>
   <data name="UploadFailedText" xml:space="preserve">
     <value>Fehler beim Upload der Datei. Überprüfe die Verbindung und die Server Logs.</value>
   </data>
   <data name="UploadText" xml:space="preserve">
     <value>Hochladen</value>
+  </data>
+  <data name="UseAuthText" xml:space="preserve">
+    <value>Authentifizierung verwenden</value>
   </data>
   <data name="UsernameText" xml:space="preserve">
     <value>Benutzername</value>

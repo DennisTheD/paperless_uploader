@@ -13,7 +13,9 @@ namespace PaperlessClient.Mobile.Services
     public class NavigationService : INavigationService
     {
         private ITenantService tenantService;
+        private string lastLocation;
 
+        public bool IsLocked { get; private set; } = true;
         public ViewModelBase ActiveViewModel { get; set; }
         public ViewModelBase PreviousPageViewModel { get; set; }
 
@@ -112,6 +114,22 @@ namespace PaperlessClient.Mobile.Services
         public Task PopAsync()
         {
             return Shell.Current?.Navigation.PopAsync();
+        }
+
+        public async Task Lock() {
+            lastLocation = Shell.Current.CurrentState.Location.OriginalString;            
+            await NavigateToAsync($"//{nameof(LockPage)}");
+            IsLocked = true;
+        }
+
+        public async Task Unlock() {
+            if (string.IsNullOrWhiteSpace(lastLocation)) {
+                await Shell.Current.GoToAsync($"//{nameof(DocumentListPage)}");
+            }
+            else {
+                await Shell.Current.GoToAsync(lastLocation);
+            }
+            IsLocked = false;
         }
     }
 }

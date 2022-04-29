@@ -79,6 +79,42 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Authentication failed ähnelt.
+        /// </summary>
+        public static string AuthFailedText {
+            get {
+                return ResourceManager.GetString("AuthFailedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die If this option is enabled, the app will require authentication on every startup. ähnelt.
+        /// </summary>
+        public static string AuthPreferenceDescription {
+            get {
+                return ResourceManager.GetString("AuthPreferenceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Authentication is required to access your documents ähnelt.
+        /// </summary>
+        public static string AuthReasonText {
+            get {
+                return ResourceManager.GetString("AuthReasonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Abbrechen ähnelt.
+        /// </summary>
+        public static string CancelText {
+            get {
+                return ResourceManager.GetString("CancelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Are you sure you want to delete this Server? ähnelt.
         /// </summary>
         public static string DeleteTenantConfirmationText {
@@ -205,6 +241,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Preferences ähnelt.
+        /// </summary>
+        public static string PreferencesText {
+            get {
+                return ResourceManager.GetString("PreferencesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Ready to receive new files ähnelt.
         /// </summary>
         public static string ReadyText {
@@ -277,6 +322,15 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unlock ähnelt.
+        /// </summary>
+        public static string UnlockText {
+            get {
+                return ResourceManager.GetString("UnlockText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Failed to upload the file. Please check your network connectivity and your server logs ähnelt.
         /// </summary>
         public static string UploadFailedText {
@@ -291,6 +345,15 @@ namespace PaperlessClient.Mobile.Resources {
         public static string UploadText {
             get {
                 return ResourceManager.GetString("UploadText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use authentication ähnelt.
+        /// </summary>
+        public static string UseAuthText {
+            get {
+                return ResourceManager.GetString("UseAuthText", resourceCulture);
             }
         }
         

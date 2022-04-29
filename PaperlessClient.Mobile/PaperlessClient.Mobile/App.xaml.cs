@@ -15,6 +15,7 @@ namespace PaperlessClient.Mobile
         private INavigationService navigationService;      
         private ITenantService tenantService;
         private IFileUploadQueueService fileUploadQueueService;
+        private IPreferenceService preferenceService;
 
         public App()
         {
@@ -27,6 +28,7 @@ namespace PaperlessClient.Mobile
             navigationService = ServiceLocator.Resolve<INavigationService>();
             tenantService = ServiceLocator.Resolve<ITenantService>();
             fileUploadQueueService = ServiceLocator.Resolve<IFileUploadQueueService>();
+            preferenceService = ServiceLocator.Resolve<IPreferenceService>();
 
             MainPage = new LoadingPage();
 
@@ -48,7 +50,7 @@ namespace PaperlessClient.Mobile
                 , new UploadFileNavigationHint() { DeleteFileAfterUpload = true, FileUri = uploadRequest.FileUri, Title = uploadRequest.FileTitle });
         }
 
-        private async Task InitializeAsync() {
+        public async Task InitializeAsync() {
             await tenantService.InitializeAsync();
             await navigationService.InitializeAsync();
         }
@@ -59,6 +61,10 @@ namespace PaperlessClient.Mobile
 
         protected override void OnSleep()
         {
+            if (!navigationService.IsLocked
+                && preferenceService.GetBoolPreference(AppPreference.USE_AUTHENTICATION)) {
+                navigationService.Lock();
+            }
         }
 
         protected override void OnResume()

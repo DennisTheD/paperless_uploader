@@ -71,11 +71,15 @@
     <Compile Include="CustomRenderer\AuthorizedWebViewRenderer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Services\IosAppAuthService.cs" />
+    <BundleResource Include="Base.lproj\Localizable.strings" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork%402x" />
+    <BundleResource Include="Resources\de.lproj\InfoPlist.strings" />
+    <BundleResource Include="Resources\en.lproj\InfoPlist.strings" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -176,4 +180,5 @@
   <ItemGroup>
     <BundleResource Include="Resources\logo-dark.png" />
   </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -71,6 +71,11 @@
         </CollectionView>
     </Shell.FlyoutHeader>
 
+    <ShellContent 
+        ContentTemplate="{DataTemplate views:LockPage}" 
+        FlyoutItemIsVisible="False" 
+        Route="LockPage" />
+    
     <FlyoutItem
         Title="Paperless">
 
@@ -107,6 +112,16 @@
         </FlyoutItem.Icon>
 
         <ShellContent ContentTemplate="{DataTemplate views:TennantListPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="{ext:Translate PreferencesText}">
+
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="{StaticResource RemixiconFont}" Glyph="{x:Static fonts:RemixiconFont.Settings3Fill}" />
+        </FlyoutItem.Icon>
+
+        <ShellContent ContentTemplate="{DataTemplate views:PreferencesPage}" />
     </FlyoutItem>
 
     <ShellContent 

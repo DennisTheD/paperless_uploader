@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:TopLevelContentPage
+    x:TypeArguments="vms:PreferencesViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PaperlessClient.Mobile.Views.PreferencesPage"
+    xmlns:views="clr-namespace:PaperlessClient.Mobile.Views"
+    xmlns:ext="clr-namespace:PaperlessClient.Mobile.Extensions"
+    xmlns:behaviors="clr-namespace:PaperlessClient.Mobile.Behaviors"
+    xmlns:fonts="clr-namespace:PaperlessClient.Mobile.Resources.Fonts"
+    xmlns:vms="clr-namespace:PaperlessClient.Mobile.ViewModels"    
+    Title="{ext:Translate PreferencesText}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" x:Key="settingLabel">
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout
+            Padding="5,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Style="{StaticResource settingLabel}"
+                    Text="{ext:Translate UseAuthText}"/>
+                <Switch 
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    IsToggled="{Binding UseAuthentication}">
+
+                    <Switch.Behaviors>
+                        <behaviors:EventToCommandBehavior Command="{Binding ToggleAuthCommand}" EventName="Toggled" />
+                    </Switch.Behaviors>
+                </Switch>
+
+                <Label 
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Style="{StaticResource descriptionLabel}">
+
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{x:Static fonts:RemixiconFont.InformationFill}" FontFamily="{StaticResource RemixiconFont}" />
+                            <Span Text=" " />
+                            <Span Text="{ext:Translate AuthPreferenceDescription}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</views:TopLevelContentPage>

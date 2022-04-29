@@ -29,6 +29,11 @@ namespace PaperlessClient.Mobile
 
         protected override void OnNavigated(ShellNavigatedEventArgs args)
         {
+            this.FlyoutBehavior =
+                args.Current.Location.OriginalString == $"//{nameof(LockPage)}"
+                ? FlyoutBehavior.Disabled
+                : FlyoutBehavior.Flyout;
+
             base.OnNavigated(args);
             if (args.Source == ShellNavigationSource.Pop)
             {
