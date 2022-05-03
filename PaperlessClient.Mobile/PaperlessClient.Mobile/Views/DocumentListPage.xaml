@@ -47,11 +47,15 @@
 
                 <CollectionView
                     ItemsSource="{Binding Items}"
-                    RemainingItemsThreshold="3"
+                    RemainingItemsThreshold="1"
                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreItemsCommand}"
                     SelectionMode="Single"
                     SelectionChangedCommand="{Binding ItemSelectedCommand}"
                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+
+                    <CollectionView.Footer>
+                        <ActivityIndicator IsVisible="{Binding IsLoadingMoreItems}" IsRunning="{Binding IsLoadingMoreItems}" />
+                    </CollectionView.Footer>
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Document">
