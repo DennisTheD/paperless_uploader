@@ -15,6 +15,8 @@ namespace PaperlessClient.Mobile.ViewModels
 {
     public class DocumentListViewModel : ApiListViewModelsBase<Document>
     {
+        private bool isInitialized = false;
+
         private bool isInSearchMode;
         public bool IsInSearchMode {
             get => isInSearchMode;
@@ -114,6 +116,14 @@ namespace PaperlessClient.Mobile.ViewModels
             }
             finally {
                 IsBusy = false;
+            }            
+        }
+
+        public override async Task InitializeAsync(object parameter)
+        {
+            if (!isInitialized) {
+                await base.InitializeAsync(parameter);
+                isInitialized = true;
             }            
         }
 
