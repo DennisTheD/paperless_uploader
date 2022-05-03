@@ -322,7 +322,7 @@ namespace PaperlessClient.Mobile.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Unlock ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Click to unlock ähnelt.
         /// </summary>
         public static string UnlockText {
             get {

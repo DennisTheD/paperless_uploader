@@ -205,7 +205,7 @@
     <value>Title</value>
   </data>
   <data name="UnlockText" xml:space="preserve">
-    <value>Unlock</value>
+    <value>Click to unlock</value>
   </data>
   <data name="UploadFailedText" xml:space="preserve">
     <value>Failed to upload the file. Please check your network connectivity and your server logs</value>

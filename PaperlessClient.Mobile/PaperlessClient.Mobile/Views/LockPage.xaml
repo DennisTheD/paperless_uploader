@@ -17,15 +17,20 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-
-            <Label 
+            
+            <ImageButton
+                Command="{Binding RetryAuthCommand}"
                 Grid.Row="1"
-                Text="{x:Static fonts:RemixiconFont.Lock2Fill}"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand"
-                TextColor="White"
-                FontFamily="{StaticResource RemixiconFont}"
-                FontSize="60"/>
+                HorizontalOptions="CenterAndExpand">
+                <ImageButton.Source>
+                    <FontImageSource 
+                        FontFamily="{StaticResource RemixiconFont}"
+                        Glyph="{x:Static fonts:RemixiconFont.Lock2Fill}"
+                        Size="60"
+                        Color="White"/>
+                </ImageButton.Source>
+            </ImageButton>
 
             <Button 
                 Grid.Row="2"

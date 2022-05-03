@@ -205,7 +205,7 @@
     <value>Titel</value>
   </data>
   <data name="UnlockText" xml:space="preserve">
-    <value>Entsperren</value>
+    <value>Klicken zum entsperren</value>
   </data>
   <data name="UploadFailedText" xml:space="preserve">
     <value>Fehler beim Upload der Datei. Überprüfe die Verbindung und die Server Logs.</value>
