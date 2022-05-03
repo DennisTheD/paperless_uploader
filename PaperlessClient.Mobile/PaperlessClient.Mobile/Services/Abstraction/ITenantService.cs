@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PaperlessClient.Mobile.Services.Abstraction
@@ -16,7 +17,8 @@ namespace PaperlessClient.Mobile.Services.Abstraction
             , string username
             , string password
             , string tennantName
-            , bool setAsDefault = false);
+            , bool setAsDefault = false
+            , CancellationToken? cancellationToken = null);
 
         Task<List<ApiSetup>> GetTennants();
         void ChangeTenant(ApiSetup tenant);

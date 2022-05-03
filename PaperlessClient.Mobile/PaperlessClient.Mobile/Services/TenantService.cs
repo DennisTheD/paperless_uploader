@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -33,8 +34,11 @@ namespace PaperlessClient.Mobile.Services
             , string username
             , string password
             , string tennantName
-            , bool setAsDefault = false)
+            , bool setAsDefault = false
+            , CancellationToken? cancellationToken = null)
         {
+            cancellationToken = cancellationToken ?? CancellationToken.None;
+
             // prepare the login request
             var loginRequest = new ApiLoginRequest(username, password);
             var requestText = JsonConvert.SerializeObject(loginRequest);
@@ -46,7 +50,7 @@ namespace PaperlessClient.Mobile.Services
             ApiLoginResponse loginResponse = null;
             try
             {
-                var response = await loginClient.PostAsync(LOGIN_ENDPOINT, requestContent);
+                var response = await loginClient.PostAsync(LOGIN_ENDPOINT, requestContent, cancellationToken.Value);
                 response.EnsureSuccessStatusCode();
                 var responseText = await response.Content.ReadAsStringAsync();
                 loginResponse = JsonConvert.DeserializeObject<ApiLoginResponse>(responseText); // parse the token

@@ -4,6 +4,7 @@ using PaperlessClient.Mobile.Services.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -13,9 +14,11 @@ namespace PaperlessClient.Mobile.ViewModels
     {
         private TaskCompletionSource<bool> setupTcs = new TaskCompletionSource<bool>();
         public Task SetupTask => setupTcs.Task;
+        private CancellationTokenSource loginCancellationTokenSource;
 
         private Action onSuccessAction;
 
+        #region props
         private string tennantName;
         public string TennantName { 
             get => tennantName;
@@ -24,7 +27,9 @@ namespace PaperlessClient.Mobile.ViewModels
         public string Endpoint { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        #endregion
 
+        #region commands
         private Command loginCommand;
         public Command LoginCommand {
             get {
@@ -34,6 +39,20 @@ namespace PaperlessClient.Mobile.ViewModels
                 return loginCommand;
             }
         }
+
+        private Command cancelLoginCommand;
+        public Command CancelLoginCommand
+        {
+            get
+            {
+                if (cancelLoginCommand == null)
+                {
+                    cancelLoginCommand = new Command(() => loginCancellationTokenSource?.Cancel());
+                }
+                return cancelLoginCommand;
+            }
+        }
+        #endregion
 
         private ITenantService tenantService;
 
@@ -66,8 +85,10 @@ namespace PaperlessClient.Mobile.ViewModels
 
             IsBusy = true;
             var success = false;
+            loginCancellationTokenSource = new CancellationTokenSource(10000);
+
             try{
-                success = await tenantService.Login(endpintUri, Username, Password, TennantName);
+                success = await tenantService.Login(endpintUri, Username, Password, TennantName, cancellationToken: loginCancellationTokenSource.Token);
             }
             catch (Exception){}
             finally {
